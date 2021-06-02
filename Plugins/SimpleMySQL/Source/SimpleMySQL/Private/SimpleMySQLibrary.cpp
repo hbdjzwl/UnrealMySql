@@ -582,4 +582,121 @@
 //	mysql_library_end();
 //}
 //
+//------------------------------------预处理---------------------------------------------------------------
 
+void USimpleMySQLLibrary::MySqlMain()
+{
+	//Text
+	/*
+		char  255  char 固定大小
+		varchar 255 -> text 可变长度
+		text  65,535     255平方 可变长度
+		tinytext 255  可变长度
+		blob     65,535
+		mediumtext 16,777,215 个字符的字符串。64四次方
+		mediumblob 16,777,215
+		longtext	4,294,967,295 个字符
+		longblob	4,294,967,295 个字符
+		ENUM(x,y,z,etc.)  65535 "" = 0
+		SET()
+	*/
+	//Number
+	/*
+		int(size)  -2147483648到2147483647  0到4294967295 size= 11
+		bigint(size) -9223372036854775808 到 9223372036854775807 0到18446744073709551615 size= 20
+		tinyint(size) -128到127 0到255 size = 4
+		smallint(size) -32768到32767 无符号0到65535 size = 6
+		mediumint(size) -8388608到8388607 无符号的范围是0到16777215  size = 9
+		float(size,d)
+		double(size,d)
+		decimal(size,d)作为字符串存储的 double 类型
+	*/
+	//Date/time
+	/*
+		DATE() YYYY-MM-DD 1000-01-01 ~ 9999-12-31  2020-6-27
+		DATETIME() YYYY-MM-DD HH:MM:SS  1000-01-01 00:00:00~ 9999-12-31 23:59:59 2020-6-27 09:30:01
+		TIMESTAMP() 1970-01-01 00:00:01 - 至今 用秒来存储
+		TIME() HH:MM:SS -838:59:59 ~ 838:59:59
+		YEAR() 
+	*/
+
+	const char *user = "root";
+	const char *host = "127.0.0.1";//localhost
+	const char *pawd = "root";
+	const char *table = "hello";
+	const uint32 port = 3306;
+
+	MYSQL mysql;
+	mysql_library_init(NULL, NULL, NULL);//保证线程安全
+	mysql_init(&mysql);//分配内存
+
+	char select[] = "SELECT name FROM W";
+	if (mysql_real_connect(&mysql, host, user, pawd, table, port, 0, 0))//链接
+	{
+		//1.减少服务器负荷
+		//2.提高服务器响应的速度
+		//3.可以提供参数机制，让客户有更多查询方法
+
+		//MYSQL_STMT
+		//MYSQL_BIND
+
+		//MYSQL_STMT *mysql_stmt_init(MYSQL *mysql)     
+		//mysql_stmt_close(MYSQL_STMT *)
+
+		//int mysql_stmt_prepare(MYSQL_STMT *stmt, const char *query, unsigned long length)
+		//my_bool mysql_stmt_bind_param(MYSQL_STMT *stmt, MYSQL_BIND *bind) 
+		//my_bool mysql_stmt_bind_result(MYSQL_STMT *stmt, MYSQL_BIND *bind) 
+
+		//int mysql_stmt_execute(MYSQL_STMT *stmt)
+		//int mysql_stmt_store_result(MYSQL_STMT *stmt)  
+		//int mysql_stmt_fetch(MYSQL_STMT *stmt) 
+
+		MYSQL_STMT *Ptr = mysql_stmt_init(&mysql);
+
+		char *SQL = "INSERT INTO ppp1 VALUES(?,?)";//放置注入攻击
+		int ret = mysql_stmt_prepare(Ptr, SQL, FString(ANSI_TO_TCHAR(SQL)).Len());
+		if (ret != 0)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, mysql_stmt_error(Ptr));
+			return;
+		}
+		int32 id = 100;
+		MYSQL_BIND Pram[2];
+		FMemory::Memset(Pram, 0, sizeof(Pram));
+		Pram[0].buffer_type = MYSQL_TYPE_LONG;
+		Pram[0].buffer = &id;
+		Pram[0].length = 0;
+
+		char *content = "Hello";
+		uint32 contentlen = strlen(content);
+		Pram[1].buffer_type = MYSQL_TYPE_VARCHAR;
+		//Pram[1].is_null = 0;
+		Pram[1].buffer = content;
+		Pram[1].length = (unsigned long*)&contentlen;
+		Pram[1].buffer_length = contentlen;
+		
+		ret = mysql_stmt_bind_param(Ptr, Pram);
+		if (ret != 0)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, mysql_stmt_error(Ptr));
+			return;
+		}
+
+		ret = mysql_stmt_execute(Ptr);
+		if (ret != 0)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, mysql_stmt_error(Ptr));
+			return;
+		}
+
+		mysql_stmt_close(Ptr);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, "connect failed!");
+		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, mysql_error(&mysql));
+	}
+
+	mysql_close(&mysql);
+	mysql_library_end();
+}
