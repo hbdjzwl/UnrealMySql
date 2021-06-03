@@ -589,32 +589,32 @@ void USimpleMySQLLibrary::MySqlMain()
 	//Text
 	/*
 		char  255  char 固定大小
-		varchar 255 -> text 可变长度
-		text  65,535     255平方 可变长度
-		tinytext 255  可变长度
-		blob     65,535
-		mediumtext 16,777,215 个字符的字符串。64四次方
-		mediumblob 16,777,215
+		varchar 255 -> text 可变长度(初始化就是255)
+		text  65,535     255平方 可变长度(初始化根据字节大小)
+		tinytext 255  可变长度(初始化根据字节大小)
+		blob     65,535(二进制存储对象，初始化65535，储存图片等)
+		mediumtext 16,777,215 个字符的字符串。64四次方(text相同) 1M+
+		mediumblob 16,777,215 二进制
 		longtext	4,294,967,295 个字符
 		longblob	4,294,967,295 个字符
-		ENUM(x,y,z,etc.)  65535 "" = 0
-		SET()
+		ENUM(x,y,z,etc.)  65535  如果为""默认为0，不读0位  枚举取单个值
+		SET() 可以取插多个值的集合，最多可以有64个不同的对象，
 	*/
 	//Number
-	/*
-		int(size)  -2147483648到2147483647  0到4294967295 size= 11
+	/*	
+		int(size)  4字节: -2147483648到2147483647  0到4294967295+ size= 11
 		bigint(size) -9223372036854775808 到 9223372036854775807 0到18446744073709551615 size= 20
 		tinyint(size) -128到127 0到255 size = 4
 		smallint(size) -32768到32767 无符号0到65535 size = 6
 		mediumint(size) -8388608到8388607 无符号的范围是0到16777215  size = 9
-		float(size,d)
+		float(size,d)   大小，小数点多少位
 		double(size,d)
-		decimal(size,d)作为字符串存储的 double 类型
+		decimal(size,d) 作为字符串存储的 double 类型  域或者十进制
 	*/
 	//Date/time
 	/*
-		DATE() YYYY-MM-DD 1000-01-01 ~ 9999-12-31  2020-6-27
-		DATETIME() YYYY-MM-DD HH:MM:SS  1000-01-01 00:00:00~ 9999-12-31 23:59:59 2020-6-27 09:30:01
+		DATE() YYYY-MM-DD (1000-01-01 ~ 9999-12-31)  2020-6-27
+		DATETIME() YYYY-MM-DD HH:MM:SS      (1000-01-01 00:00:00~ 9999-12-31 23:59:59） 2020-6-27 09:30:01
 		TIMESTAMP() 1970-01-01 00:00:01 - 至今 用秒来存储
 		TIME() HH:MM:SS -838:59:59 ~ 838:59:59
 		YEAR() 
@@ -653,7 +653,7 @@ void USimpleMySQLLibrary::MySqlMain()
 
 		MYSQL_STMT *Ptr = mysql_stmt_init(&mysql);
 
-		char *SQL = "INSERT INTO ppp1 VALUES(?,?)";//放置注入攻击
+		char *SQL = "INSERT INTO ppp1 VALUES(?,?)";//防止注入攻击
 		int ret = mysql_stmt_prepare(Ptr, SQL, FString(ANSI_TO_TCHAR(SQL)).Len());
 		if (ret != 0)
 		{
@@ -662,15 +662,15 @@ void USimpleMySQLLibrary::MySqlMain()
 		}
 		int32 id = 100;
 		MYSQL_BIND Pram[2];
-		FMemory::Memset(Pram, 0, sizeof(Pram));
-		Pram[0].buffer_type = MYSQL_TYPE_LONG;
-		Pram[0].buffer = &id;
-		Pram[0].length = 0;
+		FMemory::Memset(Pram, 0, sizeof(Pram)); //必须初始化不然会崩溃
+		Pram[0].buffer_type = MYSQL_TYPE_LONG;	//字段类型
+		Pram[0].buffer = &id;	//值
+		Pram[0].length = 0;	
 
 		char *content = "Hello";
 		uint32 contentlen = strlen(content);
 		Pram[1].buffer_type = MYSQL_TYPE_VARCHAR;
-		//Pram[1].is_null = 0;
+		//Pram[1].is_null = 0;	//视频说Memset就可有可无
 		Pram[1].buffer = content;
 		Pram[1].length = (unsigned long*)&contentlen;
 		Pram[1].buffer_length = contentlen;
