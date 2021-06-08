@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MySQL/mysql.h"
+#include "SimpleMysqlLinkType.h"
 
 struct  FSimpleMysqlLink
 {
@@ -16,7 +17,12 @@ struct  FSimpleMysqlLink
 		uint16 InClientFlag = 0);
 	~FSimpleMysqlLink();
 
+	void InitMysqlOptions() {}
+
 	bool QueryLink(const FString& SQL,FString& ErrMesg);
+
+
+	bool CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields) { return false; }//, const TArray<FString>& InPrimaryKeys, const FMysqlCreateTableParam& Param, FString& ErrorMsg);
 
 private:
 	const FString User;			//”√ªß
