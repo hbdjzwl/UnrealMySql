@@ -49,6 +49,70 @@ enum EModificationVariableType
 	Mysql_unsigned	UMETA(DisplayName = "unsigned")
 };
 
+//存储引擎类型
+UENUM(BlueprintType)
+enum class EMysqlSaveEngine :uint8
+{
+	//___________________________________________________________________________________________________________________________________
+	//Engine			//|Comment														 |Support	| Transactions  |XA		|Savepoints	|			
+	//____________________|_______________________________________________________________________________________________________________
+	InnoDB,				//|Supports transactions, row-level locking, and foreign keys	 |	YES		|	YES			|YES	|	YES		|
+	MyISAM,				//|MyISAM storage engine										 |	DEFAULT	|	NO			|NO		|	NO		|
+	MEMORY,				//|Hash based, stored in memory, useful for temporary tables	 |	YES		|	NO			|NO		|	NO		|
+	ARCHIVE,			//|Archive storage engine										 |	YES		|	NO			|NO		|	NO		|
+	CSV,				//|CSV storage engine											 |	YES		|	NO			|NO		|	NO		|
+	PERFORMANCE_SCHEMA,	//|Performance Schema											 |	YES		|	NO			|NO		|	NO		|
+	MRG_MYISAM,			//|Collection of identical MyISAM tables						 |	YES		|	NO			|NO		|	NO		|
+	BLACKHOLE,			//|/dev/null storage engine (anything you write to it disappears)|	YES		|	NO			|NO		|	NO		|
+	FEDERATED,			//|Federated MySQL storage engine								 |	NO		|	NULL		|NULL	|	NULL	|
+	//___________________________________________________________________________________________________________________________________
+};
+
+//字符集
+UENUM(BlueprintType)
+enum class EMysqlCharset :uint8
+{
+	None,
+	armscii8,
+	ascii,
+	big5,
+	binary,
+	cp1250,
+	cp1251,
+	cp1256,
+	cp1257,
+	cp850,
+	cp852,
+	cp866,
+	cp932,
+	dec8,
+	eucjpms,
+	euckr,
+	gb2312,
+	gbk,
+	geostd8,
+	greek,
+	bebrew,
+	hp8,
+	keybcs2,
+	koi8r,
+	koi8u,
+	latin1,
+	latin2,
+	latin5,
+	latin7,
+	macce,
+	macroman,
+	sjis,
+	swe7,
+	tis620,
+	ucs2,
+	ujis,
+	utf16,
+	utf32,
+	utf8,
+	utf8mb4
+};
 
 //字段的类型
 USTRUCT(BlueprintType)
@@ -88,4 +152,20 @@ struct SIMPLEMYSQL_API FMysqlFieldType
 		FString Comment;
 
 	FString ToString() const;	//转换为String
+};
+
+
+
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FMysqlCreateTableParam
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|CreateTableParam")
+	EMysqlSaveEngine SaveEngine;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|CreateTableParam")
+	EMysqlCharset Charset;
+
+	FString ToString() const;
 };

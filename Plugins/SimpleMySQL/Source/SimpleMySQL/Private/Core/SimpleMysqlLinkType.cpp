@@ -1,6 +1,12 @@
 #include "Core/SimpleMysqlLinkType.h"
 
 FMysqlFieldType::FMysqlFieldType()
+	: ModificationVariableType(EModificationVariableType::Mysql_NONE)
+	, VariableType(EMysqlVariableType::MYSQL_LONG)
+	, VariableLen(0)
+	, DecimalPoint(0)
+	, bNULL(true)
+	, bAutoIncrement(false)
 {
 
 }
@@ -41,3 +47,9 @@ FString FMysqlFieldType::ToString() const
 	return FieldTypeString;
 }
 
+FString FMysqlCreateTableParam::ToString()const
+{
+	FString Param;
+
+	return Param;
+}

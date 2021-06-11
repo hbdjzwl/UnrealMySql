@@ -22,7 +22,11 @@ struct  FSimpleMysqlLink
 	bool QueryLink(const FString& SQL,FString& ErrMesg);
 
 
-	bool CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields) { return false; }//, const TArray<FString>& InPrimaryKeys, const FMysqlCreateTableParam& Param, FString& ErrorMsg);
+	bool CreateDataBase(const FString& DataBaseName, EMysqlCharset Charset, FString& ErrorMsg);
+	bool DropDataBase(const FString& DataBaseName, FString& ErrorMsg);
+
+	//创建表
+	bool CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields, const TMap<FString, FMysqlFieldType>& InPrimaryKeys, const FMysqlCreateTableParam& Param, FString& ErrorMsg);
 
 private:
 	const FString User;			//用户

@@ -60,3 +60,44 @@ bool FSimpleMysqlLink::QueryLink(const FString& SQL,FString& ErrMesg)
 	return true;
 }
 
+bool FSimpleMysqlLink::CreateDataBase(const FString& DataBaseName, EMysqlCharset Charset, FString& ErrorMsg)
+{
+	FString SQL = TEXT("CREATE DATABASE ") + DataBaseName + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+
+bool FSimpleMysqlLink::DropDataBase(const FString& DataBaseName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("DROP DATABASE ") + DataBaseName + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+//创建表
+bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields, const TMap<FString, FMysqlFieldType>& InPrimaryKeys,const FMysqlCreateTableParam& Param, FString& ErrorMsg)
+{
+	FString SQL = TEXT("CREATE TABLE `");
+	SQL += (TableName + TEXT("`("));
+
+	auto SpawnFieldsString = [&](const TMap<FString, FMysqlFieldType>& InNewFields)
+	{
+		for (auto& Tmp : InNewFields)
+		{
+			SQL += TEXT("`") + Tmp.Key + TEXT("` "); //定义字段名字
+			SQL += Tmp.Value.ToString() + TEXT(",");
+		}
+	};
+
+	SpawnFieldsString(InFields);		//创建字段
+	SpawnFieldsString(InPrimaryKeys);	//创建主键
+	SQL.RemoveFromEnd(",");				//删除循环末尾的,符号
+	SQL += TEXT(")");
+	SQL += Param.ToString();			//设置引擎
+
+	SQL += ";";
+
+
+	
+	return QueryLink(SQL,ErrorMsg);
+}
+
