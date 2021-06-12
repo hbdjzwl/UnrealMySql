@@ -1,4 +1,6 @@
 #include "Core/SimpleMysqlLink.h"
+
+
 FSimpleMysqlLink::FSimpleMysqlLink(const FString& InUser, const FString& InHost, const FString& InPawd, const FString& InDB, const uint32 InPort, const FString& InUnix_Socket /*= "\0"*/, uint16 InClientFlag /*= 0*/)
 	:User(InUser),
 	Host(InHost),

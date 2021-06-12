@@ -1,7 +1,7 @@
 #include "Core/SimpleMysqlLinkType.h"
 
 FMysqlFieldType::FMysqlFieldType()
-	: ModificationVariableType(EModificationVariableType::Mysql_NONE)
+	: bUnsignedVariable(false)
 	, VariableType(EMysqlVariableType::MYSQL_LONG)
 	, VariableLen(0)
 	, DecimalPoint(0)
@@ -13,13 +13,22 @@ FMysqlFieldType::FMysqlFieldType()
 
 FString FMysqlFieldType::ToString() const
 { 
-	FString FieldTypeString;
+	//Name INT NOT NULL AUTO_INCREMENT
+	UEnum *MysqlVariableEnum = StaticEnum<EMysqlVariableType>();
+	FString FieldTypeString = MysqlVariableEnum->GetNameStringByIndex((int32)VariableType);
 
+	FieldTypeString.RemoveFromStart(TEXT("MYSQL_"));
 	if (VariableLen > 0 || DecimalPoint > 0)	//变量长度和小数点
 	{
 		FieldTypeString += TEXT("(") + FString::Printf(TEXT("%lld"), VariableLen) +	
 			(DecimalPoint > 0 ? FString::Printf(TEXT(",%lld"), DecimalPoint) : FString("")) + TEXT(")");
 	}
+
+	if (bUnsignedVariable)
+	{
+		FieldTypeString += TEXT(" UNSIGNED");
+	}
+
 	if (bNULL)
 	{
 		FieldTypeString += TEXT(" NULL");
@@ -50,6 +59,13 @@ FString FMysqlFieldType::ToString() const
 FString FMysqlCreateTableParam::ToString()const
 {
 	FString Param;
+	UEnum *SaveEngineEnum = StaticEnum<EMysqlSaveEngine>();
+	FString SaveEngineString = SaveEngineEnum->GetNameStringByIndex((int32)SaveEngine);
+	Param += (TEXT(" ENGINE=") + SaveEngineString);
+
+	UEnum *CharsetEnum = StaticEnum<EMysqlCharset>();
+	FString CharsetString = CharsetEnum->GetNameStringByIndex((int32)Charset);
+	Param += (TEXT(" DEFAULT CHARSET=") + CharsetString);
 
 	return Param;
 }

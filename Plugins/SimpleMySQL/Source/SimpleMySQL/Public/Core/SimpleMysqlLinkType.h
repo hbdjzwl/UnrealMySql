@@ -1,7 +1,6 @@
 // Copyright (C) RenZhai.2020.All Rights Reserved.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "SimpleMysqlLinkType.generated.h"
 
@@ -42,12 +41,7 @@ enum class EMysqlVariableType :uint8
 	MYSQL_GEOMETRY = 255				 UMETA(DisplayName = "Geometry"),	//   Geometry(PINT(经度 维度)) 
 };
 
-//UENUM(BlueprintType)
-enum EModificationVariableType
-{
-	Mysql_NONE		UMETA(DisplayName = "None"),
-	Mysql_unsigned	UMETA(DisplayName = "unsigned")
-};
+
 
 //存储引擎类型
 UENUM(BlueprintType)
@@ -127,9 +121,6 @@ struct SIMPLEMYSQL_API FMysqlFieldType
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|FieldType")
 		EMysqlVariableType VariableType;	//变量类型
-
-	//UPROPERTY()
-		EModificationVariableType ModificationVariableType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|FieldType")
 		int64 VariableLen;		//变量长度 

@@ -1,10 +1,9 @@
 // Copyright (C) RenZhai.2020.All Rights Reserved.
 
 #pragma once
-
 #include "CoreMinimal.h"
-#include "MySQL/mysql.h"
 #include "SimpleMysqlLinkType.h"
+#include "MySQL/mysql.h"
 
 struct  FSimpleMysqlLink
 {
