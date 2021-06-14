@@ -69,6 +69,19 @@ bool FSimpleMysqlLink::CreateDataBase(const FString& DataBaseName, EMysqlCharset
 }
 
 
+bool FSimpleMysqlLink::CreateAndSelectDataBase(const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg)
+{
+	FString CreateDataBaseError;
+	if (CreateDataBase(DataBaseName, Charset, CreateDataBaseError))
+	{
+		SelectNewDB(DataBaseName, ErrorMsg);
+	}
+
+	ErrorMsg += CreateDataBaseError;
+
+	return ErrorMsg.IsEmpty();
+}
+
 bool FSimpleMysqlLink::DropDataBase(const FString& DataBaseName, FString& ErrorMsg)
 {
 	FString SQL = TEXT("DROP DATABASE ") + DataBaseName + TEXT(";");
@@ -76,7 +89,7 @@ bool FSimpleMysqlLink::DropDataBase(const FString& DataBaseName, FString& ErrorM
 }
 
 //创建表
-bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields, const TMap<FString, FMysqlFieldType>& InPrimaryKeys,const FMysqlCreateTableParam& Param, FString& ErrorMsg)
+bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields, const TArray<FString>& InPrimaryKeys,const FMysqlCreateTableParam& Param, FString& ErrorMsg)
 {
 	FString SQL = TEXT("CREATE TABLE `");
 	SQL += (TableName + TEXT("`("));
@@ -91,9 +104,26 @@ bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString,
 	};
 
 	SpawnFieldsString(InFields);		//创建字段
-	SpawnFieldsString(InPrimaryKeys);	//创建主键
+
+	//创建主键
+	//PRIMARY KEY(1,2,3,4,5,6),
+	if (InPrimaryKeys.Num())
+	{
+		SQL += TEXT("PRIMARY KEY(`");
+		for (auto &Tmp : InPrimaryKeys)
+		{
+			SQL += (Tmp + TEXT(","));
+		}
+
+		SQL.RemoveFromEnd(TEXT(","));
+		SQL += TEXT("`),");
+	}
+
+
+
 	SQL.RemoveFromEnd(",");				//删除循环末尾的,符号
 	SQL += TEXT(")");
+
 	SQL += Param.ToString();			//设置引擎
 
 	SQL += ";";
@@ -101,5 +131,46 @@ bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString,
 
 	
 	return QueryLink(SQL,ErrorMsg);
+}
+
+bool FSimpleMysqlLink::SelectNewDB(const FString &NewDB, FString &ErrMesg)
+{
+	int32 Ret = mysql_ping(&Mysql);
+	if (Ret == 0)
+	{
+		if (mysql_select_db(&Mysql, TCHAR_TO_UTF8(*NewDB)) == 0)
+		{
+			DB = NewDB;
+			return true;
+		}
+	}
+	else
+	{
+		if (mysql_real_connect(
+			&Mysql,
+			TCHAR_TO_UTF8(*Host),
+			TCHAR_TO_UTF8(*User),
+			TCHAR_TO_UTF8(*Pawd),
+			TCHAR_TO_UTF8(*DB),
+			Port,
+			Unix_Socket == TEXT("") ? 0 : TCHAR_TO_UTF8(*Unix_Socket),
+			ClientFlag))//链接
+		{
+			if (mysql_select_db(&Mysql, TCHAR_TO_UTF8(*NewDB)) == 0)
+			{
+				DB = NewDB;
+
+				return true;
+			}
+
+			ErrMesg = UTF8_TO_TCHAR(mysql_error(&Mysql));
+		}
+		else
+		{
+			ErrMesg = UTF8_TO_TCHAR(mysql_error(&Mysql));
+		}
+	}
+
+	return false;
 }
 

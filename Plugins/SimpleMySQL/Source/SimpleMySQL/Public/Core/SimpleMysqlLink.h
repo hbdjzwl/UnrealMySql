@@ -12,7 +12,7 @@ struct  FSimpleMysqlLink
 		const FString& InPawd,
 		const FString& InDB,
 		const uint32   InPort,
-		const FString& InUnix_Socket = "\0",
+		const FString& InUnix_Socket = TEXT(""),
 		uint16 InClientFlag = 0);
 	~FSimpleMysqlLink();
 
@@ -22,16 +22,20 @@ struct  FSimpleMysqlLink
 
 
 	bool CreateDataBase(const FString& DataBaseName, EMysqlCharset Charset, FString& ErrorMsg);
+
+	bool CreateAndSelectDataBase(const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg);
+
 	bool DropDataBase(const FString& DataBaseName, FString& ErrorMsg);
 
 	//创建表
-	bool CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields, const TMap<FString, FMysqlFieldType>& InPrimaryKeys, const FMysqlCreateTableParam& Param, FString& ErrorMsg);
-
+	bool CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields, const TArray<FString>& InPrimaryKeys, const FMysqlCreateTableParam& Param, FString& ErrorMsg);
+	//设置选择表
+	bool SelectNewDB(const FString &NewDB, FString &ErrMesg);
 private:
 	const FString User;			//用户
 	const FString Host;			//localhoust
 	const FString Pawd;			//密码
-	const FString DB;			//数据库db
+		  FString DB;			//数据库db
 	const FString Unix_Socket;//
 	const uint32  Port;			//端口
 	uint16 ClientFlag;

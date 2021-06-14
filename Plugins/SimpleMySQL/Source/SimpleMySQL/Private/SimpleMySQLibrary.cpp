@@ -1,6 +1,9 @@
 // Copyright (C) RenZhai.2020.All Rights Reserved.
 #include "SimpleMySQLibrary.h"
 #include "MySQL/mysql.h"
+#include "Core/SimpleMysqlLink.h"
+#include "Blueprint/SimpleMysqlObject.h"
+
 //---------------------------------------------------Á´½Ó²âÊÔ ²éÑ¯
 // void USimpleMySQLLibrary::MySqlMain()
 // {
@@ -1242,4 +1245,80 @@ void USimpleMySQLLibrary::MySqlMain()
 	*/
 
 
+}
+
+USimpleMysqlObject* USimpleMySQLLibrary::CreateMysqlObject(UObject* WorldContextObject, const FString &InUser, const FString &InHost, const FString &InPawd, const FString &InDB, const int32 InPort, const FString &Unix_Socket, const int32 InClientFlag)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		if (USimpleMysqlObject* Object = NewObject<USimpleMysqlObject>(World))
+		{
+			Object->InitMysql(InUser, InHost, InPawd, InDB, InPort, Unix_Socket, InClientFlag);
+
+			return Object;
+		}
+	}
+	return nullptr;
+}
+
+bool USimpleMySQLLibrary::CreateDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->CreateDataBase(DataBaseName, Charset, ErrorMsg);
+	}
+
+	return false;
+}
+
+
+
+bool USimpleMySQLLibrary::CreateAndSelectDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->CreateAndSelectDataBase(DataBaseName, Charset, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::DropDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, FString &ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->DropDataBase(DataBaseName, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::CreateTable(USimpleMysqlObject *Object, const FString &TableName, const TMap<FString, FMysqlFieldType> &InFields, const TArray<FString> &InPrimaryKeys, const FMysqlCreateTableParam &Param, FString &ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->CreateTable(TableName, InFields, InPrimaryKeys, Param, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::SelectNewDB(USimpleMysqlObject *Object, const FString &NewDB, FString &ErrMesg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->SelectNewDB(NewDB, ErrMesg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::QueryLink(USimpleMysqlObject *Object, const FString &SQL, FString &ErrMesg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->QueryLink(SQL, ErrMesg);
+	}
+
+	return false;
 }

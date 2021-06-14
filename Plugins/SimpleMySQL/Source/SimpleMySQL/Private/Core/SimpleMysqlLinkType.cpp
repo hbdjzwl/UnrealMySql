@@ -2,7 +2,7 @@
 
 FMysqlFieldType::FMysqlFieldType()
 	: bUnsignedVariable(false)
-	, VariableType(EMysqlVariableType::MYSQL_LONG)
+	, VariableType(EMysqlVariableType::MYSQL_int)
 	, VariableLen(0)
 	, DecimalPoint(0)
 	, bNULL(true)

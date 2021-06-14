@@ -8,37 +8,45 @@
 UENUM(BlueprintType)
 enum class EMysqlVariableType :uint8
 {
-	MYSQL_DECIMAL							 UMETA(DisplayName = "Decimal"),	//DECIMAL(M,D)/NUMERIC  M > D ? M+ 2 : D+ 2
-	MYSQL_TINY								 UMETA(DisplayName = "Small Int"),	//SMALLINT		2 //s
-	MYSQL_SHORT								 UMETA(DisplayName = "Short"),		//SHORT			2 //s
-	MYSQL_LONG								 UMETA(DisplayName = "integer"),	//INTEGER		4 //s
-	MYSQL_FLOAT								 UMETA(DisplayName = "Float"),		//FLOAT			4 //s
-	MYSQL_DOUBLE							 UMETA(DisplayName = "Double"),		//DOUBLE/REAL	8 //s
-	MYSQL_NULL								 UMETA(DisplayName = "Null"),		//NULL
-	MYSQL_TIMESTAMP							 UMETA(DisplayName = "Time Stamp"), //TIMESTAMP		8
-	MYSQL_LONGLONG							 UMETA(DisplayName = "Big Int"),	//BIGINT		8 //s
-	MYSQL_INT24								 UMETA(DisplayName = "Medium Int"),	//MEDIUMINT		3 //ns
-	MYSQL_DATE								 UMETA(DisplayName = "Date"),		//DATE			3
-	MYSQL_TIME								 UMETA(DisplayName = "Time"),		//TIME			3
-	MYSQL_DATETIME							 UMETA(DisplayName = "Date Time"),	//DATETIME		8
-	MYSQL_YEAR								 UMETA(DisplayName = "Year"),		//YEAR			1
-	MYSQL_NEWDATE							 UMETA(DisplayName = "New Date"),	//NEWDATE
-	MYSQL_VARCHAR							 UMETA(DisplayName = "Varchar"),	//VARCHAR
-	MYSQL_BIT								 UMETA(DisplayName = "Bit"),		//BIT(M)			
-	MYSQL_TIMESTAMP2						 UMETA(DisplayName = "Time Stamp2"),
-	MYSQL_DATETIME2							 UMETA(DisplayName = "Date Time2"),
-	MYSQL_TIME2								 UMETA(DisplayName = "Time2"),
-	MYSQL_JSON = 245				 UMETA(DisplayName = "Json"),		//@@
-	MYSQL_NEWDECIMAL = 246				 UMETA(DisplayName = "New Decimal"),//
-	MYSQL_ENUM = 247				 UMETA(DisplayName = "Enum"),		//				1 or 2   65535个
-	MYSQL_SET = 248				 UMETA(DisplayName = "Set"),		//				1,2,4,8
-	MYSQL_TINY_BLOB = 249				 UMETA(DisplayName = "Tiny Blob"),  //@@				//s
-	MYSQL_MEDIUM_BLOB = 250				 UMETA(DisplayName = "Medium Blob"),//@@				//s
-	MYSQL_LONG_BLOB = 251				 UMETA(DisplayName = "Long Blob"),	//@@				//s
-	MYSQL_BLOB = 252				 UMETA(DisplayName = "Blob"),		//@@ 				//s
-	MYSQL_VAR_STRING = 253				 UMETA(DisplayName = "VarString"),	//@@ //VARCHAR
-	MYSQL_STRING = 254				 UMETA(DisplayName = "String"),		//@@ //CHAR/VARCHAR 
-	MYSQL_GEOMETRY = 255				 UMETA(DisplayName = "Geometry"),	//   Geometry(PINT(经度 维度)) 
+	MYSQL_tinyint								UMETA(DisplayName = "tinyint"),
+	MYSQL_smallint								UMETA(DisplayName = "smallint"),
+	MYSQL_mediumint								UMETA(DisplayName = "mediumint"),
+	MYSQL_int									UMETA(DisplayName = "int"),
+	MYSQL_integer								UMETA(DisplayName = "integer"),
+	MYSQL_bigint								UMETA(DisplayName = "bigint"),
+	MYSQL_bit									UMETA(DisplayName = "bit"),
+	MYSQL_real									UMETA(DisplayName = "real"),
+	MYSQL_double								UMETA(DisplayName = "double"),	
+	MYSQL_float									UMETA(DisplayName = "float"),	
+	MYSQL_decimal								UMETA(DisplayName = "decimal"),
+	MYSQL_numeric								UMETA(DisplayName = "numeric"),
+	MYSQL_char									UMETA(DisplayName = "char"),
+	MYSQL_varchar								UMETA(DisplayName = "varchar"),
+	MYSQL_date									UMETA(DisplayName = "date"),
+	MYSQL_time									UMETA(DisplayName = "time"),
+	MYSQL_year									UMETA(DisplayName = "year"),
+	MYSQL_timestamp								UMETA(DisplayName = "timestamp"),
+	MYSQL_datetime								UMETA(DisplayName = "datetime"),
+	MYSQL_tinyblob								UMETA(DisplayName = "tinyblob"),
+	MYSQL_blob									UMETA(DisplayName = "blob"),
+	MYSQL_mediumblob							UMETA(DisplayName = "mediumblob"),
+	MYSQL_longblob								UMETA(DisplayName = "longblob"),
+	MYSQL_tinytext								UMETA(DisplayName = "tinytext"),
+	MYSQL_text									UMETA(DisplayName = "text"),
+	MYSQL_mediumtext							UMETA(DisplayName = "mediumtext"),
+	MYSQL_longtext								UMETA(DisplayName = "longtext"),
+	MYSQL_enum									UMETA(DisplayName = "enum"),
+	MYSQL_set									UMETA(DisplayName = "set"),
+	MYSQL_binary								UMETA(DisplayName = "binary"),
+	MYSQL_varbinary								UMETA(DisplayName = "varbinary"),
+	MYSQL_point									UMETA(DisplayName = "point"),
+	MYSQL_linestring							UMETA(DisplayName = "linestring"),
+	MYSQL_polygon								UMETA(DisplayName = "polygon"),
+	MYSQL_geometry								UMETA(DisplayName = "geometry"),
+	MYSQL_multipoint							UMETA(DisplayName = "multipoint"),
+	MYSQL_multilinestring						UMETA(DisplayName = "multilinestring"),
+	MYSQL_multipolygon							UMETA(DisplayName = "multipolygon"),
+	MYSQL_geometrycollection					UMETA(DisplayName = "geometrycollection"),
 };
 
 
