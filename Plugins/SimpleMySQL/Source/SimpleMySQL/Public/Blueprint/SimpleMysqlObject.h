@@ -23,8 +23,8 @@ public:
 		const FString &InPawd,
 		const FString &InDB,
 		const uint32  InPort,
-		const FString &Unix_Socket/* = TEXT("\0")*/,
-		uint16 InClientFlag = 0);
+		const FString &Unix_Socket = TEXT(""),
+		const TArray<ESimpleClientFlags>& InClientFlag = TArray<ESimpleClientFlags>());
 
 	TSharedRef<FSimpleMysqlLink> GetLink();
 private:

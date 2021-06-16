@@ -70,6 +70,31 @@ enum class EMysqlSaveEngine :uint8
 	//___________________________________________________________________________________________________________________________________
 };
 
+UENUM(BlueprintType)
+enum class ESimpleClientFlags :uint8
+{
+	Client_None,
+	Client_Long_Password,			/* new more secure passwords */
+	Client_Found_Rows,				/* Found instead of affected rows */
+	Client_Long_Flag,				/* Get all column flags */
+	Client_Connect_With_db,			/* One can specify db on connect */
+	Client_No_Schema,				/* Don't allow database.table.column */
+	Client_Compress,				/* Can use compression protocol */
+	Client_ODBC,					/* Odbc client */
+	Client_Local_Files,				/* Can use LOAD DATA LOCAL */
+	Client_Ignore_Space,			/* Ignore spaces before '(' */
+	Client_Protocol_41,				/* New 4.1 protocol */
+	Client_Interactive,				/* This is an interactive client */
+	Client_SSL,						/* Switch to SSL after handshake */
+	Client_Ignore_Sigpipe,			/* IGNORE sigpipes */
+	Client_Transactions,			/* Client knows about transactions */
+	Client_Reserved,				/* Old flag for 4.1 protocol  */
+	Client_Reserved2,				/* Old flag for 4.1 authentication */
+	Client_Multi_Statements,		/* Enable/disable multi-stmt support */
+	Client_Multi_Results,			/* Enable/disable multi-results */
+	Client_PS_Multi_Results,		/* Multi-results in PS-protocol */
+};
+
 //×Ö·û¼¯
 UENUM(BlueprintType)
 enum class EMysqlCharset :uint8

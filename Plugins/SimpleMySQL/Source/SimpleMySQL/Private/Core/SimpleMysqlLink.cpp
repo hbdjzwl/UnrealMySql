@@ -1,20 +1,23 @@
 #include "Core/SimpleMysqlLink.h"
 
 
-FSimpleMysqlLink::FSimpleMysqlLink(const FString& InUser, const FString& InHost, const FString& InPawd, const FString& InDB, const uint32 InPort, const FString& InUnix_Socket /*= "\0"*/, uint16 InClientFlag /*= 0*/)
+FSimpleMysqlLink::FSimpleMysqlLink(const FString& InUser, const FString& InHost, const FString& InPawd, const FString& InDB, const uint32 InPort, const FString& InUnix_Socket /*= "\0"*/, const TArray<ESimpleClientFlags> InClientFlag /*= 0*/)
 	:User(InUser),
 	Host(InHost),
 	Pawd(InPawd),
 	DB(InDB),
 	Unix_Socket(InUnix_Socket),
 	Port(InPort),
-	ClientFlag(InClientFlag)
+	ClientFlag(0)
 {
-	
+	for (auto& Tmp : InClientFlag)
+	{
+		ClientFlag |= ToMySqlClientFlag(Tmp);
+	}
+
 	mysql_library_init(NULL, NULL, NULL);//保证线程安全
 	mysql_init(&Mysql);
 
-	
 }
 
 FSimpleMysqlLink::~FSimpleMysqlLink()
@@ -172,5 +175,52 @@ bool FSimpleMysqlLink::SelectNewDB(const FString &NewDB, FString &ErrMesg)
 	}
 
 	return false;
+}
+
+uint32 FSimpleMysqlLink::ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const
+{
+	switch (ClientFlags)
+	{
+	case ESimpleClientFlags::Client_Long_Password:
+		return 1;
+	case ESimpleClientFlags::Client_Found_Rows:
+		return 2;
+	case ESimpleClientFlags::Client_Long_Flag:
+		return 4;
+	case ESimpleClientFlags::Client_Connect_With_db:
+		return 8;
+	case ESimpleClientFlags::Client_No_Schema:
+		return 16;
+	case ESimpleClientFlags::Client_Compress:
+		return 32;
+	case ESimpleClientFlags::Client_ODBC:
+		return 64;
+	case ESimpleClientFlags::Client_Local_Files:
+		return 128;
+	case ESimpleClientFlags::Client_Ignore_Space:
+		return 256;
+	case ESimpleClientFlags::Client_Protocol_41:
+		return 512;
+	case ESimpleClientFlags::Client_Interactive:
+		return 1024;
+	case ESimpleClientFlags::Client_SSL:
+		return 2048;
+	case ESimpleClientFlags::Client_Ignore_Sigpipe:
+		return 4096;
+	case ESimpleClientFlags::Client_Transactions:
+		return 8192;
+	case ESimpleClientFlags::Client_Reserved:
+		return 16384;
+	case ESimpleClientFlags::Client_Reserved2:
+		return 32768;
+	case ESimpleClientFlags::Client_Multi_Statements:
+		return (1UL << 16);
+	case ESimpleClientFlags::Client_Multi_Results:
+		return (1UL << 17);
+	case ESimpleClientFlags::Client_PS_Multi_Results:
+		return (1UL << 18);
+	}
+
+	return 0;
 }
 

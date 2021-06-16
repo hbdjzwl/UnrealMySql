@@ -1247,7 +1247,7 @@ void USimpleMySQLLibrary::MySqlMain()
 
 }
 
-USimpleMysqlObject* USimpleMySQLLibrary::CreateMysqlObject(UObject* WorldContextObject, const FString &InUser, const FString &InHost, const FString &InPawd, const FString &InDB, const int32 InPort, const FString &Unix_Socket, const int32 InClientFlag)
+USimpleMysqlObject* USimpleMySQLLibrary::CreateMysqlObject(UObject* WorldContextObject, const FString &InUser, const FString &InHost, const FString &InPawd, const FString &InDB, const int32 InPort, const TArray<ESimpleClientFlags>& InClientFlag, const FString& Unix_Socket)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
 	{

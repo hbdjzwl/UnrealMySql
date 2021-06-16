@@ -26,8 +26,8 @@ public:
 			const FString &InPawd,
 			const FString &InDB,
 			const int32  InPort,
-			const FString &Unix_Socket = TEXT(""),
-			const int32 InClientFlag = 0
+			const TArray<ESimpleClientFlags>& InClientFlag,
+			const FString &Unix_Socket = TEXT("")
 			);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
