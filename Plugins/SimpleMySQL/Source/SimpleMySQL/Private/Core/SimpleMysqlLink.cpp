@@ -1,4 +1,5 @@
 #include "Core/SimpleMysqlLink.h"
+#include "Core/SimpleMySqlMacro.h"
 
 
 FSimpleMysqlLink::FSimpleMysqlLink(const FString& InUser, const FString& InHost, const FString& InPawd, const FString& InDB, const uint32 InPort, const FString& InUnix_Socket /*= "\0"*/, const TArray<ESimpleClientFlags> InClientFlag /*= 0*/)
@@ -24,6 +25,31 @@ FSimpleMysqlLink::~FSimpleMysqlLink()
 {
 	mysql_close(&Mysql);
 	mysql_library_end();
+}
+
+
+bool FSimpleMysqlLink::GetStoreResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug *//*= FSimpleMysqlDebugResult()*/)
+{
+	if (MYSQL_RES *Result = mysql_store_result(&Mysql))
+	{
+		GetResult(Result, Results);
+	}
+
+	ErrMesg = UTF8_TO_TCHAR(mysql_error(&Mysql));
+
+	return ErrMesg.IsEmpty();
+}
+
+bool FSimpleMysqlLink::GetUseResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug *	//*= FSimpleMysqlDebugResult()*/)
+{
+	if (MYSQL_RES *Result = mysql_use_result(&Mysql))
+	{
+		GetResult(Result, Results);
+	}
+
+	ErrMesg = UTF8_TO_TCHAR(mysql_error(&Mysql));
+
+	return ErrMesg.IsEmpty();
 }
 
 bool FSimpleMysqlLink::QueryLink(const FString& SQL,FString& ErrMesg)
@@ -63,6 +89,32 @@ bool FSimpleMysqlLink::QueryLink(const FString& SQL,FString& ErrMesg)
 
 	}
 	return true;
+}
+
+bool FSimpleMysqlLink::QueryLinkStoreResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+{
+	FString ErrMsgQuery;
+	if (QueryLink(SQL, ErrMsgQuery))
+	{
+		GetStoreResult(Results, ErrMesg);
+	}
+
+	ErrMesg += ErrMsgQuery;
+
+	return ErrMesg.IsEmpty();
+}
+
+bool FSimpleMysqlLink::QueryLinkUseResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+{
+	FString ErrMsgQuery;
+	if (QueryLink(SQL, ErrMsgQuery))
+	{
+		GetUseResult(Results, ErrMesg);
+	}
+
+	ErrMesg += ErrMsgQuery;
+
+	return ErrMesg.IsEmpty();
 }
 
 bool FSimpleMysqlLink::CreateDataBase(const FString& DataBaseName, EMysqlCharset Charset, FString& ErrorMsg)
@@ -177,6 +229,35 @@ bool FSimpleMysqlLink::SelectNewDB(const FString &NewDB, FString &ErrMesg)
 	return false;
 }
 
+bool FSimpleMysqlLink::PrintResult(const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen /*= true*/, bool bPrintToLog /*= true*/)
+{
+	for (auto& Tmp : Results)
+	{
+		FString RowString;
+		for (int i = 0; i < Tmp.Rows.Num(); i++)
+		{
+			int32 Len = Tmp.Rows[i].Len() / 2;
+			int32 AddLen = 10 - Len; //剩余空间的 长度
+			RowString += "|";
+			for (int j = 0; j < AddLen; j++)
+			{
+				RowString += " ";
+			}
+
+			RowString += Tmp.Rows[i];
+
+			for (int j = 0; j < AddLen; j++)
+			{
+				RowString += " ";
+			}
+
+			Mysql_Printf(*RowString, bPrintToScreen, bPrintToLog, FColor::Red, 100.f);
+		}
+	}
+
+	return Results.Num() != 0;
+}
+
 uint32 FSimpleMysqlLink::ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const
 {
 	switch (ClientFlags)
@@ -222,5 +303,30 @@ uint32 FSimpleMysqlLink::ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const
 	}
 
 	return 0;
+}
+
+
+void FSimpleMysqlLink::GetResult(MYSQL_RES *Result, TArray<FSimpleMysqlResult> &Results)
+{
+	int32 NumRow = mysql_num_fields(Result);
+	while (MYSQL_ROW SQLRow = mysql_fetch_row(Result))
+	{
+		Results.Add(FSimpleMysqlResult());
+		FSimpleMysqlResult *R = &Results[Results.Num() - 1];
+
+		FString RowString;
+		for (int i = 0; i < NumRow; i++)
+		{
+			if (SQLRow[i] != NULL)
+			{
+				R->Rows.Add(ANSI_TO_TCHAR(SQLRow[i]));
+			}
+			else
+			{
+				R->Rows.Add(TEXT("NULL"));
+
+			}
+		}
+	}
 }
 

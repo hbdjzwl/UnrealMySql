@@ -193,3 +193,12 @@ struct SIMPLEMYSQL_API FMysqlCreateTableParam
 
 	FString ToString() const;
 };
+
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlResult
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|MysqlResult")
+	TArray<FString> Rows;
+};

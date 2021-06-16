@@ -1312,7 +1312,6 @@ bool USimpleMySQLLibrary::SelectNewDB(USimpleMysqlObject *Object, const FString 
 
 	return false;
 }
-
 bool USimpleMySQLLibrary::QueryLink(USimpleMysqlObject *Object, const FString &SQL, FString &ErrMesg)
 {
 	if (Object)
@@ -1322,3 +1321,55 @@ bool USimpleMySQLLibrary::QueryLink(USimpleMysqlObject *Object, const FString &S
 
 	return false;
 }
+
+
+bool USimpleMySQLLibrary::QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->QueryLinkStoreResult(SQL, Results,ErrMesg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->QueryLinkUseResult(SQL, Results, ErrMesg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/)
+{
+	if (Object)
+	{
+		return Object->GetLink()->GetStoreResult(Results, ErrMesg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/)
+{
+	if (Object)
+	{
+		return Object->GetLink()->GetUseResult(Results, ErrMesg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::PrintResult(USimpleMysqlObject *Object, const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen /*= true*/, bool bPrintToLog /*= true*/)
+{
+	if (Object)
+	{
+		return Object->GetLink()->PrintResult(Results, bPrintToScreen, bPrintToLog);
+	}
+
+	return false;
+}
+
