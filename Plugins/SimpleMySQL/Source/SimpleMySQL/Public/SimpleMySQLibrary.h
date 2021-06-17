@@ -34,10 +34,10 @@ public:
 		static bool QueryLink(USimpleMysqlObject *Object, const FString &SQL, FString &ErrMesg);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		bool QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg);
+		bool QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		bool QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg);
+		bool QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
 
 	//创建数据库DB
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
@@ -59,10 +59,10 @@ public:
 		static bool SelectNewDB(USimpleMysqlObject *Object, const FString &NewDB, FString &ErrMesg);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/);
+	bool GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug, FString &ErrMesg);
 	
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/);
+	bool GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug,FString &ErrMesg);
 
 	//打印结果集
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))

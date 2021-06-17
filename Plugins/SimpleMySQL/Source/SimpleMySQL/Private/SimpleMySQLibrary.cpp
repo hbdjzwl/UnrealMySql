@@ -1323,41 +1323,41 @@ bool USimpleMySQLLibrary::QueryLink(USimpleMysqlObject *Object, const FString &S
 }
 
 
-bool USimpleMySQLLibrary::QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+bool USimpleMySQLLibrary::QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug)
 {
 	if (Object)
 	{
-		return Object->GetLink()->QueryLinkStoreResult(SQL, Results,ErrMesg);
+		return Object->GetLink()->QueryLinkStoreResult(SQL, Results,ErrMesg, Debug);
 	}
 
 	return false;
 }
 
-bool USimpleMySQLLibrary::QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+bool USimpleMySQLLibrary::QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug)
 {
 	if (Object)
 	{
-		return Object->GetLink()->QueryLinkUseResult(SQL, Results, ErrMesg);
+		return Object->GetLink()->QueryLinkUseResult(SQL, Results, ErrMesg, Debug);
 	}
 
 	return false;
 }
 
-bool USimpleMySQLLibrary::GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/)
+bool USimpleMySQLLibrary::GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug, FString &ErrMesg)
 {
 	if (Object)
 	{
-		return Object->GetLink()->GetStoreResult(Results, ErrMesg);
+		return Object->GetLink()->GetStoreResult(Results, ErrMesg, Debug);
 	}
 
 	return false;
 }
 
-bool USimpleMySQLLibrary::GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/)
+bool USimpleMySQLLibrary::GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug , FString &ErrMesg)
 {
 	if (Object)
 	{
-		return Object->GetLink()->GetUseResult(Results, ErrMesg);
+		return Object->GetLink()->GetUseResult(Results, ErrMesg, Debug);
 	}
 
 	return false;

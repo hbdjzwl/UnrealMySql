@@ -19,17 +19,17 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 
 	void InitMysqlOptions() {}
 
-	bool GetStoreResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/);
+	bool GetStoreResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult());
 
-	bool GetUseResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult()*/);
+	bool GetUseResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg, const FSimpleMysqlDebugResult &Debug = FSimpleMysqlDebugResult());
 
 	//Á¢Âí²éÑ¯
 	bool QueryLink(const FString& SQL,FString& ErrMesg);
 
 	//
-	bool QueryLinkStoreResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg);
+	bool QueryLinkStoreResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
 
-	bool QueryLinkUseResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg);
+	bool QueryLinkUseResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
 
 	bool CreateDataBase(const FString& DataBaseName, EMysqlCharset Charset, FString& ErrorMsg);
 

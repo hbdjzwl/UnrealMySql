@@ -69,3 +69,10 @@ FString FMysqlCreateTableParam::ToString()const
 
 	return Param;
 }
+
+FSimpleMysqlDebugResult::FSimpleMysqlDebugResult()
+	:bPrintToScreen(false)
+	,bPrintToLog(false)
+{
+
+}

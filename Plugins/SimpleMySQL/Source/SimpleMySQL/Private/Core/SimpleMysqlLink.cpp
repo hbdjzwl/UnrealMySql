@@ -28,11 +28,16 @@ FSimpleMysqlLink::~FSimpleMysqlLink()
 }
 
 
-bool FSimpleMysqlLink::GetStoreResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug *//*= FSimpleMysqlDebugResult()*/)
+bool FSimpleMysqlLink::GetStoreResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg, const FSimpleMysqlDebugResult &Debug /*= FSimpleMysqlDebugResult()*/)
 {
 	if (MYSQL_RES *Result = mysql_store_result(&Mysql))
 	{
 		GetResult(Result, Results);
+
+		if (Debug.bPrintToScreen || Debug.bPrintToLog)
+		{
+			PrintResult(Results, Debug.bPrintToScreen, Debug.bPrintToLog);
+		}
 	}
 
 	ErrMesg = UTF8_TO_TCHAR(mysql_error(&Mysql));
@@ -40,11 +45,16 @@ bool FSimpleMysqlLink::GetStoreResult(TArray<FSimpleMysqlResult> &Results, FStri
 	return ErrMesg.IsEmpty();
 }
 
-bool FSimpleMysqlLink::GetUseResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg/*, const FSimpleMysqlDebugResult &Debug *	//*= FSimpleMysqlDebugResult()*/)
+bool FSimpleMysqlLink::GetUseResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg, const FSimpleMysqlDebugResult &Debug /*= FSimpleMysqlDebugResult()*/)
 {
 	if (MYSQL_RES *Result = mysql_use_result(&Mysql))
 	{
 		GetResult(Result, Results);
+
+		if (Debug.bPrintToScreen || Debug.bPrintToLog)
+		{
+			PrintResult(Results, Debug.bPrintToScreen, Debug.bPrintToLog);
+		}
 	}
 
 	ErrMesg = UTF8_TO_TCHAR(mysql_error(&Mysql));
@@ -91,12 +101,12 @@ bool FSimpleMysqlLink::QueryLink(const FString& SQL,FString& ErrMesg)
 	return true;
 }
 
-bool FSimpleMysqlLink::QueryLinkStoreResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+bool FSimpleMysqlLink::QueryLinkStoreResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug)
 {
 	FString ErrMsgQuery;
 	if (QueryLink(SQL, ErrMsgQuery))
 	{
-		GetStoreResult(Results, ErrMesg);
+		GetStoreResult(Results, ErrMesg, Debug);
 	}
 
 	ErrMesg += ErrMsgQuery;
@@ -104,12 +114,12 @@ bool FSimpleMysqlLink::QueryLinkStoreResult(const FString& SQL, TArray<FSimpleMy
 	return ErrMesg.IsEmpty();
 }
 
-bool FSimpleMysqlLink::QueryLinkUseResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg)
+bool FSimpleMysqlLink::QueryLinkUseResult(const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug)
 {
 	FString ErrMsgQuery;
 	if (QueryLink(SQL, ErrMsgQuery))
 	{
-		GetUseResult(Results, ErrMesg);
+		GetUseResult(Results, ErrMesg, Debug);
 	}
 
 	ErrMesg += ErrMsgQuery;
