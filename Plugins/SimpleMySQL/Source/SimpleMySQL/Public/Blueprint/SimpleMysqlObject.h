@@ -8,7 +8,7 @@
 
 
 /**
- * 
+ * UE4的C++类封装了原生的Mysql类(FSimpleMysqlLink)，方便蓝图调用。
  */
 UCLASS(Blueprintable,BlueprintType)
 class SIMPLEMYSQL_API USimpleMysqlObject : public UObject

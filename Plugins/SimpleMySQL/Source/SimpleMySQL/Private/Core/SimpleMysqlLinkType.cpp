@@ -11,45 +11,49 @@ FMysqlFieldType::FMysqlFieldType()
 
 }
 
+//将表的所有字段的参数返回为String
 FString FMysqlFieldType::ToString() const
 { 
 	//Name INT NOT NULL AUTO_INCREMENT
 	UEnum *MysqlVariableEnum = StaticEnum<EMysqlVariableType>();
 	FString FieldTypeString = MysqlVariableEnum->GetNameStringByIndex((int32)VariableType);
 
-	FieldTypeString.RemoveFromStart(TEXT("MYSQL_"));
-	if (VariableLen > 0 || DecimalPoint > 0)	//变量长度和小数点
+	FieldTypeString.RemoveFromStart(TEXT("MYSQL_")); //获取枚举字段对应的mysql数据类型
+
+	if (VariableLen > 0 || DecimalPoint > 0)	//字段变量长度和小数点
 	{
+		// "... float(15.3)"  MySql类型的长度
 		FieldTypeString += TEXT("(") + FString::Printf(TEXT("%lld"), VariableLen) +	
 			(DecimalPoint > 0 ? FString::Printf(TEXT(",%lld"), DecimalPoint) : FString("")) + TEXT(")");
 	}
 
-	if (bUnsignedVariable)
+	if (bUnsignedVariable)	//是否是无符号
 	{
 		FieldTypeString += TEXT(" UNSIGNED");
 	}
 
-	if (bNULL)
+	if (bNULL)	
 	{
-		FieldTypeString += TEXT(" NULL");
+		FieldTypeString += TEXT(" NULL");	//值为空
 	}
 	else
-	{
-		FieldTypeString += TEXT(" NOT NULL");
+	{	
+		FieldTypeString += TEXT(" NOT NULL");	//值不为空
+
 		if (!DefaultValue.IsEmpty())
 		{
-			FieldTypeString += TEXT(" DEFAULT ") + DefaultValue;
+			FieldTypeString += TEXT(" DEFAULT ") + DefaultValue;	//默认值
 		}
 
 		if (bAutoIncrement)
 		{
-			FieldTypeString += TEXT(" AUTO_INCREMENT");
+			FieldTypeString += TEXT(" AUTO_INCREMENT");	//自增
 		}
 	}
 
 	if (!Comment.IsEmpty())
 	{
-		FieldTypeString += TEXT(" COMMENT '") + Comment + ("'");
+		FieldTypeString += TEXT(" COMMENT '") + Comment + ("'");	//提示
 	}
 
 

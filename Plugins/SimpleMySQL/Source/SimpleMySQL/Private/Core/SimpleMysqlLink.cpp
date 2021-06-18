@@ -30,13 +30,13 @@ FSimpleMysqlLink::~FSimpleMysqlLink()
 
 bool FSimpleMysqlLink::GetStoreResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg, const FSimpleMysqlDebugResult &Debug /*= FSimpleMysqlDebugResult()*/)
 {
-	if (MYSQL_RES *Result = mysql_store_result(&Mysql))
+	if (MYSQL_RES *Result = mysql_store_result(&Mysql))	//传查询语句给服务器。存到本地缓存里在去读？ 
 	{
-		GetResult(Result, Results);
+		GetResult(Result, Results);	//获取查询结果
 
 		if (Debug.bPrintToScreen || Debug.bPrintToLog)
 		{
-			PrintResult(Results, Debug.bPrintToScreen, Debug.bPrintToLog);
+			PrintResult(Results, Debug.bPrintToScreen, Debug.bPrintToLog);	//打印结果集
 		}
 	}
 
@@ -47,13 +47,13 @@ bool FSimpleMysqlLink::GetStoreResult(TArray<FSimpleMysqlResult> &Results, FStri
 
 bool FSimpleMysqlLink::GetUseResult(TArray<FSimpleMysqlResult> &Results, FString &ErrMesg, const FSimpleMysqlDebugResult &Debug /*= FSimpleMysqlDebugResult()*/)
 {
-	if (MYSQL_RES *Result = mysql_use_result(&Mysql))
+	if (MYSQL_RES *Result = mysql_use_result(&Mysql))	//通过服务器去查询然后返回结果，会浪费服务器资源
 	{
-		GetResult(Result, Results);
+		GetResult(Result, Results);//获取查询结果
 
 		if (Debug.bPrintToScreen || Debug.bPrintToLog)
 		{
-			PrintResult(Results, Debug.bPrintToScreen, Debug.bPrintToLog);
+			PrintResult(Results, Debug.bPrintToScreen, Debug.bPrintToLog);	//打印结果集
 		}
 	}
 
@@ -61,6 +61,7 @@ bool FSimpleMysqlLink::GetUseResult(TArray<FSimpleMysqlResult> &Results, FString
 
 	return ErrMesg.IsEmpty();
 }
+
 
 bool FSimpleMysqlLink::QueryLink(const FString& SQL,FString& ErrMesg)
 {
@@ -164,7 +165,7 @@ bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString,
 		for (auto& Tmp : InNewFields)
 		{
 			SQL += TEXT("`") + Tmp.Key + TEXT("` "); //定义字段名字
-			SQL += Tmp.Value.ToString() + TEXT(",");
+			SQL += Tmp.Value.ToString() + TEXT(","); //将表的所有字段的参数返回为String
 		}
 	};
 
@@ -189,7 +190,7 @@ bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString,
 	SQL.RemoveFromEnd(",");				//删除循环末尾的,符号
 	SQL += TEXT(")");
 
-	SQL += Param.ToString();			//设置引擎
+	SQL += Param.ToString();			//设置引擎与字符集
 
 	SQL += ";";
 

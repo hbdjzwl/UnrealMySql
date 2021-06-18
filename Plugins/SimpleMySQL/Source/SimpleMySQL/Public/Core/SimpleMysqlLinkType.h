@@ -70,6 +70,7 @@ enum class EMysqlSaveEngine :uint8
 	//___________________________________________________________________________________________________________________________________
 };
 
+
 UENUM(BlueprintType)
 enum class ESimpleClientFlags :uint8
 {
@@ -179,7 +180,7 @@ struct SIMPLEMYSQL_API FMysqlFieldType
 };
 
 
-
+//引擎和字符集
 USTRUCT(BlueprintType)
 struct SIMPLEMYSQL_API FMysqlCreateTableParam
 {
@@ -191,10 +192,10 @@ struct SIMPLEMYSQL_API FMysqlCreateTableParam
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|CreateTableParam")
 	EMysqlCharset Charset;
 
-	FString ToString() const;
+	FString ToString() const;	////创建表时:设置存储引擎和字符集
 };
 
-//获取的信息
+//获取查询的所有行信息
 USTRUCT(BlueprintType)
 struct SIMPLEMYSQL_API FSimpleMysqlResult
 {
