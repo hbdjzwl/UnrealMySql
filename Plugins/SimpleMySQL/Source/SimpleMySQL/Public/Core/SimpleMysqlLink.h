@@ -51,6 +51,26 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 	//创建表
 	bool CreateTable(const FString& TableName, const TMap<FString, FMysqlFieldType>& InFields, const TArray<FString>& InPrimaryKeys, const FMysqlCreateTableParam& Param, FString& ErrorMsg);
 	
+	
+	//bool DropTemporaryTable(const FString& TemporaryTableName, FString& ErrorMsg);
+
+	//将表全部删除 释放内存 不支持回滚 Innodb 和 MyISAM 全部清除
+	bool DropTable(const FString& TableName, FString& ErrorMsg);
+
+	//清除表 释放内存 不支持回滚 Innodb 和 MyISAM 全部清除
+	bool TruncateTable(const FString& TableName, FString& ErrorMsg);
+	
+	//可回滚，并没有真正的释放掉内存
+	bool DeleteFromTable(const FString& TableName, FString& ErrorMsg);
+	
+	//搭配 DeleteFromTable 用于删除和释放内存
+	bool OptimiseTable(const FString& TableName, FString& ErrorMsg);
+
+	//条件删除表
+	bool DeleteFromTableWhereData(const FString& TableName, const FString& Condition, FString& ErrorMsg);
+
+
+
 	//设置选择表
 	bool SelectNewDB(const FString &NewDB, FString &ErrMesg);
 

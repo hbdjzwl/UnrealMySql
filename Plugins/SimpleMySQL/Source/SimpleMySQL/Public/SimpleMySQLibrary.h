@@ -54,6 +54,29 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 		static bool CreateTable(USimpleMysqlObject *Object, const FString &TableName, const TMap<FString, FMysqlFieldType> &InFields, const TArray<FString> &InPrimaryKeys, const FMysqlCreateTableParam &Param, FString &ErrorMsg);
 
+// 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+// 		static bool DropTemporaryTable(USimpleMysqlObject* Object, const FString& TemporaryTableName, FString& ErrorMsg);
+
+	//将表全部删除 释放内存 不支持回滚 Innodb 和 MyISAM 全部清除
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool DropTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+
+	//清除表 释放内存 不支持回滚 Innodb 和 MyISAM 全部清除
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool TruncateTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+
+	//可回滚，并没有真正的释放掉内存
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool DeleteFromTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+
+	//搭配 DeleteFromTable 用于删除和释放内存
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool OptimiseTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+
+	//条件删除表
+ 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+	bool DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const FString& Condition, FString& ErrorMsg);
+
 	//选择表
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 		static bool SelectNewDB(USimpleMysqlObject *Object, const FString &NewDB, FString &ErrMesg);

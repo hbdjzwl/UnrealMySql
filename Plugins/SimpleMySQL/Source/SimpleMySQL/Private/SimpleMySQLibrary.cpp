@@ -1303,6 +1303,56 @@ bool USimpleMySQLLibrary::CreateTable(USimpleMysqlObject *Object, const FString 
 	return false;
 }
 
+bool USimpleMySQLLibrary::DropTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->DropTable(TableName, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::TruncateTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->TruncateTable(TableName, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::DeleteFromTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->DeleteFromTable(TableName, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::OptimiseTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->OptimiseTable(TableName, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const FString& Condition, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->DeleteFromTableWhereData(TableName, Condition, ErrorMsg);
+	}
+
+	return false;
+}
+
 bool USimpleMySQLLibrary::SelectNewDB(USimpleMysqlObject *Object, const FString &NewDB, FString &ErrMesg)
 {
 	if (Object)

@@ -199,6 +199,38 @@ bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString,
 	return QueryLink(SQL,ErrorMsg);
 }
 
+
+
+bool FSimpleMysqlLink::DropTable(const FString& TableName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("DROP TABLE IF EXISTS ") + TableName + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::TruncateTable(const FString& TableName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("TRUNCATE TABLE ") + TableName + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::DeleteFromTable(const FString& TableName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("DELETE FROM ") + TableName + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::OptimiseTable(const FString& TableName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("OPTIMISE TABLE ") + TableName + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::DeleteFromTableWhereData(const FString& TableName, const FString& Condition, FString& ErrorMsg)
+{
+		FString SQL = TEXT("DELETE FROM ") + TableName + TEXT("WHERE ") + Condition + TEXT(";");
+		return QueryLink(SQL, ErrorMsg);
+}
+
 bool FSimpleMysqlLink::SelectNewDB(const FString &NewDB, FString &ErrMesg)
 {
 	int32 Ret = mysql_ping(&Mysql);
