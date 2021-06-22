@@ -80,3 +80,18 @@ FSimpleMysqlDebugResult::FSimpleMysqlDebugResult()
 {
 
 }
+
+FSimpleMysqlQueryParameters::FSimpleMysqlQueryParameters()
+	:bDistinct(false)
+	,Limit(FVector2D::ZeroVector)
+	,bWithRollup(false)
+
+{
+
+}
+
+FSimpleMysqlQueryOrderBy::FSimpleMysqlQueryOrderBy()
+	:bDesc(false)
+{
+
+}

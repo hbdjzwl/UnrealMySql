@@ -231,6 +231,26 @@ bool FSimpleMysqlLink::DeleteFromTableWhereData(const FString& TableName, const 
 		return QueryLink(SQL, ErrorMsg);
 }
 
+bool FSimpleMysqlLink::GetSelectTableDataSR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
+{
+	FString SQL;
+	if (GetSelectTableData(SQL, TableName, InFields, QueryParam))
+	{
+		return QueryLinkStoreResult(SQL, Results, ErrorMes, Debug);
+	}
+	return false;
+}
+
+bool FSimpleMysqlLink::GetSelectTableDataUR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
+{
+	FString SQL;
+	if (GetSelectTableData(SQL, TableName, InFields, QueryParam))
+	{
+		return QueryLinkUseResult(SQL, Results, ErrorMes, Debug);
+	}
+	return false;
+}
+
 bool FSimpleMysqlLink::SelectNewDB(const FString &NewDB, FString &ErrMesg)
 {
 	int32 Ret = mysql_ping(&Mysql);
@@ -348,6 +368,76 @@ uint32 FSimpleMysqlLink::ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const
 	return 0;
 }
 
+
+bool FSimpleMysqlLink::GetSelectTableData(FString& SQL ,const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam)
+{
+	if (InFields.Num())
+	{
+		// SELECT DISTINCT 1,2,3 or * from hp where id = 10 GROUP BY id,name Desc .....
+		SQL = TEXT("SELECT ");
+
+		SQL += QueryParam.bDistinct == true ? TEXT("DISTINCT ") : TEXT("");
+		
+		//查询内部字段
+		for (auto& Tmp : InFields)
+		{
+			SQL += (Tmp + TEXT(","));
+		}
+		SQL.RemoveFromEnd(TEXT(","));
+
+		//表名
+		SQL += (TEXT(" FROM ") + TableName);
+
+		if (!QueryParam.Condition.IsEmpty())
+		{
+			SQL += (TEXT(" WHERE ") + QueryParam.Condition);
+		}
+
+		if (!QueryParam.GroupBy.Num())
+		{
+			SQL += TEXT(" GROUP BY ");
+			for (auto& Tmp : QueryParam.GroupBy)
+			{
+				SQL += (Tmp + TEXT(","));
+			}
+			SQL.RemoveFromEnd(TEXT(","));
+
+			if (QueryParam.bWithRollup)
+			{
+				SQL += TEXT(" WITH ROLLUP");
+			}
+		}
+
+		//排序
+		if (!QueryParam.OrderBy.Num())
+		{
+			SQL += TEXT(" GROUP BY ");
+			for (auto& Tmp : QueryParam.OrderBy)
+			{
+				SQL += (Tmp.FieldName + TEXT(" ") + (Tmp.bDesc == true ? TEXT("DESC") : TEXT("ASC")) + TEXT(","));
+			}
+			SQL.RemoveFromEnd(TEXT(","));
+		}
+
+		//限制
+		if (QueryParam.Limit != FVector2D::ZeroVector)
+		{
+			SQL += TEXT(" LIMIT ") + FString::Printf(TEXT("%i,%i"), (int32)QueryParam.Limit.X, (int32)QueryParam.Limit.Y);
+		}
+
+		//过滤条件
+		if (!QueryParam.Having.IsEmpty())
+		{
+			SQL += (TEXT(" HAVING ") + QueryParam.Having);
+		}
+
+		SQL += TEXT(";");
+
+		return true;
+	}
+
+	return false;
+}
 
 void FSimpleMysqlLink::GetResult(MYSQL_RES *Result, TArray<FSimpleMysqlResult> &Results)
 {

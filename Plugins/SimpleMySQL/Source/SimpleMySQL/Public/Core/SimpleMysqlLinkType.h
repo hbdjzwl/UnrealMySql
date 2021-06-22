@@ -218,3 +218,52 @@ struct SIMPLEMYSQL_API FSimpleMysqlDebugResult
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|DebugResult", meta = (EditCondition = "bDebug"))
 		bool bPrintToLog;
 };
+
+//排序
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlQueryOrderBy
+{
+	GENERATED_USTRUCT_BODY()
+
+		FSimpleMysqlQueryOrderBy();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|OrderBy")
+		FString FieldName;
+
+	//asc  //由大到小
+	//desc //由小到大
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|OrderBy")
+		bool bDesc;
+};
+
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
+{
+	GENERATED_USTRUCT_BODY()
+
+	FSimpleMysqlQueryParameters();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+	bool bDistinct;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+	FString Condition;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+	TArray<FString> GroupBy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+	TArray<FSimpleMysqlQueryOrderBy> OrderBy;
+
+	//x = 第几个,y = 偏移
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		FVector2D Limit;
+
+	//是否进行汇总
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		bool bWithRollup;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		FString Having;
+
+};

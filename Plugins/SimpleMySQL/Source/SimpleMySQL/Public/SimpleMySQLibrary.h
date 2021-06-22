@@ -31,63 +31,69 @@ public:
 			);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool QueryLink(USimpleMysqlObject *Object, const FString &SQL, FString &ErrMesg);
+	static bool QueryLink(USimpleMysqlObject *Object, const FString &SQL, FString &ErrMesg);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		bool QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
+	static bool QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		bool QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
+	static bool QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug);
 
 	//创建数据库DB
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool CreateDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg);
+	static bool CreateDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool CreateAndSelectDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg);
+	static bool CreateAndSelectDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, EMysqlCharset Charset, FString &ErrorMsg);
 
 	//删除数据库DB
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool DropDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, FString &ErrorMsg);
+	static bool DropDataBase(USimpleMysqlObject *Object, const FString &DataBaseName, FString &ErrorMsg);
 
 	//创建表
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool CreateTable(USimpleMysqlObject *Object, const FString &TableName, const TMap<FString, FMysqlFieldType> &InFields, const TArray<FString> &InPrimaryKeys, const FMysqlCreateTableParam &Param, FString &ErrorMsg);
+	static bool CreateTable(USimpleMysqlObject *Object, const FString &TableName, const TMap<FString, FMysqlFieldType> &InFields, const TArray<FString> &InPrimaryKeys, const FMysqlCreateTableParam &Param, FString &ErrorMsg);
 
 // 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-// 		static bool DropTemporaryTable(USimpleMysqlObject* Object, const FString& TemporaryTableName, FString& ErrorMsg);
+// 	static bool DropTemporaryTable(USimpleMysqlObject* Object, const FString& TemporaryTableName, FString& ErrorMsg);
 
 	//将表全部删除 释放内存 不支持回滚 Innodb 和 MyISAM 全部清除
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool DropTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+	static bool DropTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
 
 	//清除表 释放内存 不支持回滚 Innodb 和 MyISAM 全部清除
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool TruncateTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+	static bool TruncateTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
 
 	//可回滚，并没有真正的释放掉内存
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool DeleteFromTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+	static bool DeleteFromTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
 
 	//搭配 DeleteFromTable 用于删除和释放内存
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool OptimiseTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
+	static bool OptimiseTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
 
 	//条件删除表
  	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const FString& Condition, FString& ErrorMsg);
+	static bool DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const FString& Condition, FString& ErrorMsg);
 
 	//选择表
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool SelectNewDB(USimpleMysqlObject *Object, const FString &NewDB, FString &ErrMesg);
+	static bool SelectNewDB(USimpleMysqlObject *Object, const FString &NewDB, FString &ErrMesg);
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug, FString &ErrMesg);
+	static bool GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug, FString &ErrMesg);
 	
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug,FString &ErrMesg);
+	static bool GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug,FString &ErrMesg);
 
 	//打印结果集
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool PrintResult(USimpleMysqlObject *Object, const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen = true, bool bPrintToLog = true);
+	static bool PrintResult(USimpleMysqlObject *Object, const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen = true, bool bPrintToLog = true);
+
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+	static bool GetSelectTableDataSR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug);
+	
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+	static bool GetSelectTableDataUR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug);
 };

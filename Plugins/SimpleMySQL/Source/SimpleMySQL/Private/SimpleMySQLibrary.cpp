@@ -1423,3 +1423,23 @@ bool USimpleMySQLLibrary::PrintResult(USimpleMysqlObject *Object, const TArray<F
 	return false;
 }
 
+bool USimpleMySQLLibrary::GetSelectTableDataSR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug)
+{
+	if (Object)
+	{
+		return Object->GetLink()->GetSelectTableDataSR(TableName,InFields, QueryParam,Results, ErrorMes, Debug);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::GetSelectTableDataUR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug)
+{
+	if (Object)
+	{
+		return Object->GetLink()->GetSelectTableDataUR(TableName, InFields, QueryParam, Results, ErrorMes, Debug);
+	}
+
+	return false;
+}
+

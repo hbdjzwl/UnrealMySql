@@ -71,6 +71,11 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 
 
 
+	bool GetSelectTableDataSR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam,TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug = FSimpleMysqlDebugResult());
+
+	bool GetSelectTableDataUR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug = FSimpleMysqlDebugResult());
+
+
 	//设置选择表
 	bool SelectNewDB(const FString &NewDB, FString &ErrMesg);
 
@@ -79,6 +84,8 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 
 protected:
 	uint32 ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const;
+
+	bool GetSelectTableData(FString& SQL ,const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam);
 
 	//获取查询所有行结果
 	void GetResult(MYSQL_RES *RES, TArray<FSimpleMysqlResult> &Results);
