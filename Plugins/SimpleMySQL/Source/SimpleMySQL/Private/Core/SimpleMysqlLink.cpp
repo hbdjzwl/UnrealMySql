@@ -313,9 +313,9 @@ bool FSimpleMysqlLink::PrintResult(const TArray<FSimpleMysqlResult>& Results, bo
 			{
 				RowString += " ";
 			}
-
-			Mysql_Printf(*RowString, bPrintToScreen, bPrintToLog, FColor::Red, 100.f);
 		}
+
+		Mysql_Printf(*RowString, bPrintToScreen, bPrintToLog, FColor::Red, 100.f);
 	}
 
 	return Results.Num() != 0;
@@ -393,7 +393,7 @@ bool FSimpleMysqlLink::GetSelectTableData(FString& SQL ,const FString& TableName
 			SQL += (TEXT(" WHERE ") + QueryParam.Condition);
 		}
 
-		if (!QueryParam.GroupBy.Num())
+		if (QueryParam.GroupBy.Num())
 		{
 			SQL += TEXT(" GROUP BY ");
 			for (auto& Tmp : QueryParam.GroupBy)
@@ -409,7 +409,7 @@ bool FSimpleMysqlLink::GetSelectTableData(FString& SQL ,const FString& TableName
 		}
 
 		//排序
-		if (!QueryParam.OrderBy.Num())
+		if (QueryParam.OrderBy.Num())
 		{
 			SQL += TEXT(" GROUP BY ");
 			for (auto& Tmp : QueryParam.OrderBy)

@@ -96,4 +96,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 	static bool GetSelectTableDataUR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug);
+
+	//·µ»Ø¿ÕÖµ
+	UFUNCTION(BlueprintCallable, BlueprintPure ,meta = (Category = "SimpleMySQL"))
+	static TArray<FString> GetStringNULLArray();
+
+	//
+	UFUNCTION(BlueprintCallable, BlueprintPure , meta = (Category = "SimpleMySQL"))
+	static TArray<FSimpleMysqlQueryOrderBy> GetSimpleMysqlQueryOrderByNULLArray();
 };

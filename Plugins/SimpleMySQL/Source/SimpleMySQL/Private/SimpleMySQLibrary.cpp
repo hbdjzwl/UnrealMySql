@@ -1443,3 +1443,13 @@ bool USimpleMySQLLibrary::GetSelectTableDataUR(USimpleMysqlObject* Object, const
 	return false;
 }
 
+TArray<FString> USimpleMySQLLibrary::GetStringNULLArray()
+{
+	return TArray<FString>();
+}
+
+TArray<FSimpleMysqlQueryOrderBy> USimpleMySQLLibrary::GetSimpleMysqlQueryOrderByNULLArray()
+{
+	return TArray<FSimpleMysqlQueryOrderBy>();
+}
+
