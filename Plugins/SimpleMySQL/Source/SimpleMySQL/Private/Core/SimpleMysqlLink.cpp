@@ -393,6 +393,11 @@ bool FSimpleMysqlLink::GetSelectTableData(FString& SQL ,const FString& TableName
 			SQL += (TEXT(" WHERE ") + QueryParam.Condition);
 		}
 
+		if (QueryParam.JoinParameters.JoinType != EMysqlJoinType::NONE)
+		{
+			SQL += TEXT(" ") + QueryParam.JoinParameters.ToString();
+		}
+
 		if (QueryParam.GroupBy.Num())
 		{
 			SQL += TEXT(" GROUP BY ");

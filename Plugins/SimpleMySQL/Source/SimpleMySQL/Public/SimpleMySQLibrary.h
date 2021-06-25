@@ -98,10 +98,14 @@ public:
 	static bool GetSelectTableDataUR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug);
 
 	//·µ»Ø¿ÕÖµ
-	UFUNCTION(BlueprintCallable, BlueprintPure ,meta = (Category = "SimpleMySQL"))
+	UFUNCTION(BlueprintCallable, BlueprintPure ,meta = (Category = "SimpleMySQL|NULL"))
 	static TArray<FString> GetStringNULLArray();
 
 	//
-	UFUNCTION(BlueprintCallable, BlueprintPure , meta = (Category = "SimpleMySQL"))
+	UFUNCTION(BlueprintCallable, BlueprintPure , meta = (Category = "SimpleMySQL|NULL"))
 	static TArray<FSimpleMysqlQueryOrderBy> GetSimpleMysqlQueryOrderByNULLArray();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
+	static TArray<FSimpleMysqlJoinParameters> GetFSimpleMysqlJoinParametersByNULLArray();
+
 };

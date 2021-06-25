@@ -142,6 +142,16 @@ enum class EMysqlCharset :uint8
 	utf8mb4
 };
 
+UENUM(BlueprintType)
+enum class EMysqlJoinType :uint8
+{
+	NONE					 UMETA(DisplayName = "None"),
+	INNER					 UMETA(DisplayName = "Inner"),
+	LEFT 					 UMETA(DisplayName = "Left"),
+	RIGHT					 UMETA(DisplayName = "Right"),
+};
+
+
 //×Ö¶ÎµÄÀàÐÍ
 USTRUCT(BlueprintType)
 struct SIMPLEMYSQL_API FMysqlFieldType
@@ -236,6 +246,27 @@ struct SIMPLEMYSQL_API FSimpleMysqlQueryOrderBy
 		bool bDesc;
 };
 
+
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlJoinParameters
+{
+	GENERATED_USTRUCT_BODY()
+
+		FSimpleMysqlJoinParameters();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		EMysqlJoinType JoinType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		FString TableName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		FString Condition;
+
+	FString ToString() const;
+};
+
+
 USTRUCT(BlueprintType)
 struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
 {
@@ -245,6 +276,9 @@ struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
 	bool bDistinct;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+	FSimpleMysqlJoinParameters JoinParameters;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
 	FString Condition;

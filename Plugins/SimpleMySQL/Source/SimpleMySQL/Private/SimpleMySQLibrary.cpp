@@ -1453,3 +1453,8 @@ TArray<FSimpleMysqlQueryOrderBy> USimpleMySQLLibrary::GetSimpleMysqlQueryOrderBy
 	return TArray<FSimpleMysqlQueryOrderBy>();
 }
 
+TArray<FSimpleMysqlJoinParameters> USimpleMySQLLibrary::GetFSimpleMysqlJoinParametersByNULLArray()
+{
+	return TArray<FSimpleMysqlJoinParameters>();
+}
+

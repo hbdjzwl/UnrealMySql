@@ -95,3 +95,23 @@ FSimpleMysqlQueryOrderBy::FSimpleMysqlQueryOrderBy()
 {
 
 }
+
+FSimpleMysqlJoinParameters::FSimpleMysqlJoinParameters()
+	: JoinType(EMysqlJoinType::NONE)
+{
+
+}
+
+FString FSimpleMysqlJoinParameters::ToString() const
+{
+	FString SQL;
+	if (JoinType != EMysqlJoinType::NONE)
+	{
+		UEnum* MysqlJoinTypeEnum = StaticEnum<EMysqlJoinType>();
+		SQL += MysqlJoinTypeEnum->GetNameStringByIndex((int32)JoinType) + TEXT(" JOIN ");
+
+		SQL += TableName + TEXT(" ON ") + Condition;//hp.id = eee.age
+	}
+
+	return SQL;
+}
