@@ -1373,45 +1373,9 @@ bool USimpleMySQLLibrary::QueryLink(USimpleMysqlObject *Object, const FString &S
 }
 
 
-bool USimpleMySQLLibrary::QueryLinkStoreResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug)
-{
-	if (Object)
-	{
-		return Object->GetLink()->QueryLinkStoreResult(SQL, Results,ErrMesg, Debug);
-	}
 
-	return false;
-}
 
-bool USimpleMySQLLibrary::QueryLinkUseResult(USimpleMysqlObject *Object, const FString& SQL, TArray<FSimpleMysqlResult> &Results, FString& ErrMesg, const FSimpleMysqlDebugResult& Debug)
-{
-	if (Object)
-	{
-		return Object->GetLink()->QueryLinkUseResult(SQL, Results, ErrMesg, Debug);
-	}
 
-	return false;
-}
-
-bool USimpleMySQLLibrary::GetStoreResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug, FString &ErrMesg)
-{
-	if (Object)
-	{
-		return Object->GetLink()->GetStoreResult(Results, ErrMesg, Debug);
-	}
-
-	return false;
-}
-
-bool USimpleMySQLLibrary::GetUseResult(USimpleMysqlObject *Object, TArray<FSimpleMysqlResult> &Results, const FSimpleMysqlDebugResult& Debug , FString &ErrMesg)
-{
-	if (Object)
-	{
-		return Object->GetLink()->GetUseResult(Results, ErrMesg, Debug);
-	}
-
-	return false;
-}
 
 bool USimpleMySQLLibrary::PrintResult(USimpleMysqlObject *Object, const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen /*= true*/, bool bPrintToLog /*= true*/)
 {
@@ -1423,21 +1387,11 @@ bool USimpleMySQLLibrary::PrintResult(USimpleMysqlObject *Object, const TArray<F
 	return false;
 }
 
-bool USimpleMySQLLibrary::GetSelectTableDataSR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug)
+bool USimpleMySQLLibrary::GetSelectTableDataSQL(USimpleMysqlObject* Object, FString& SQL, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam)
 {
 	if (Object)
 	{
-		return Object->GetLink()->GetSelectTableDataSR(TableName,InFields, QueryParam,Results, ErrorMes, Debug);
-	}
-
-	return false;
-}
-
-bool USimpleMySQLLibrary::GetSelectTableDataUR(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug)
-{
-	if (Object)
-	{
-		return Object->GetLink()->GetSelectTableDataUR(TableName, InFields, QueryParam, Results, ErrorMes, Debug);
+		return Object->GetLink()->GetSelectTableDataSQL(SQL,TableName, InFields, QueryParam);
 	}
 
 	return false;

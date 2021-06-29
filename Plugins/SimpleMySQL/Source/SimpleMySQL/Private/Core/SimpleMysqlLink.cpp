@@ -231,10 +231,23 @@ bool FSimpleMysqlLink::DeleteFromTableWhereData(const FString& TableName, const 
 		return QueryLink(SQL, ErrorMsg);
 }
 
+bool FSimpleMysqlLink::GetSelectTableData(EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
+{
+	switch (SaveType)
+	{
+	case EMysqlQuerySaveType::STORE_RESULT:
+		return GetSelectTableDataSR(TableName, InFields, QueryParam, Results, ErrorMes, Debug);
+	case EMysqlQuerySaveType::USE_RESULT:
+		return GetSelectTableDataUR(TableName, InFields, QueryParam, Results, ErrorMes, Debug);
+	}
+	ErrorMes += FString::Printf(TEXT("This type is not supported:%i"), SaveType);
+	return false;
+}
+
 bool FSimpleMysqlLink::GetSelectTableDataSR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
 {
 	FString SQL;
-	if (GetSelectTableData(SQL, TableName, InFields, QueryParam))
+	if (GetSelectTableDataSQL(SQL, TableName, InFields, QueryParam))
 	{
 		return QueryLinkStoreResult(SQL, Results, ErrorMes, Debug);
 	}
@@ -244,7 +257,7 @@ bool FSimpleMysqlLink::GetSelectTableDataSR(const FString& TableName, const TArr
 bool FSimpleMysqlLink::GetSelectTableDataUR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
 {
 	FString SQL;
-	if (GetSelectTableData(SQL, TableName, InFields, QueryParam))
+	if (GetSelectTableDataSQL(SQL, TableName, InFields, QueryParam))
 	{
 		return QueryLinkUseResult(SQL, Results, ErrorMes, Debug);
 	}
@@ -369,7 +382,7 @@ uint32 FSimpleMysqlLink::ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const
 }
 
 
-bool FSimpleMysqlLink::GetSelectTableData(FString& SQL ,const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam)
+bool FSimpleMysqlLink::GetSelectTableDataSQL(FString& SQL ,const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam)
 {
 	if (InFields.Num())
 	{
@@ -393,11 +406,13 @@ bool FSimpleMysqlLink::GetSelectTableData(FString& SQL ,const FString& TableName
 			SQL += (TEXT(" WHERE ") + QueryParam.Condition);
 		}
 
+		//
 		if (QueryParam.JoinParameters.JoinType != EMysqlJoinType::NONE)
 		{
 			SQL += TEXT(" ") + QueryParam.JoinParameters.ToString();
 		}
 
+		//
 		if (QueryParam.GroupBy.Num())
 		{
 			SQL += TEXT(" GROUP BY ");

@@ -151,6 +151,13 @@ enum class EMysqlJoinType :uint8
 	RIGHT					 UMETA(DisplayName = "Right"),
 };
 
+UENUM(BlueprintType)
+enum class EMysqlQuerySaveType :uint8
+{
+	STORE_RESULT  UMETA(DisplayName = "Store Result"),
+	USE_RESULT    UMETA(DisplayName = "Use Result"),
+};
+
 
 //×Ö¶ÎµÄÀàÐÍ
 USTRUCT(BlueprintType)
