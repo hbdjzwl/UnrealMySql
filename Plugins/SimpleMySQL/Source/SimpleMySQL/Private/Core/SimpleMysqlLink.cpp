@@ -203,7 +203,8 @@ bool FSimpleMysqlLink::CreateTable(const FString& TableName, const TMap<FString,
 
 bool FSimpleMysqlLink::DropTable(const FString& TableName, FString& ErrorMsg)
 {
-	FString SQL = TEXT("DROP TABLE IF EXISTS ") + TableName + TEXT(";");
+	//FString SQL = TEXT("DROP TABLE IF EXISTS ") + TableName + TEXT(";");
+	FString SQL = TEXT("DROP TABLE ") + TableName + TEXT(";");
 	return QueryLink(SQL, ErrorMsg);
 }
 
@@ -242,6 +243,27 @@ bool FSimpleMysqlLink::GetSelectTableData(EMysqlQuerySaveType SaveType, const FS
 	}
 	ErrorMes += FString::Printf(TEXT("This type is not supported:%i"), SaveType);
 	return false;
+}
+
+bool FSimpleMysqlLink::UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const FString& Condition, FString& ErrorMsg)
+{
+	FString SQL = TEXT("UPDATE ") + TableName + TEXT(" SET ");
+	for (auto& Tmp : InFields)
+	{
+		SQL += (Tmp.ToString() + TEXT(","));
+	}
+	SQL.RemoveFromEnd(TEXT(","));
+
+	//SimpleMysqlAssist::ConditionToString(SQL, Condition);
+
+	if (!Condition.IsEmpty())
+	{
+		SQL += TEXT(" WHERE ") + Condition;
+	}
+
+	SQL += TEXT(";");
+
+	return QueryLink(SQL, ErrorMsg); 
 }
 
 bool FSimpleMysqlLink::GetSelectTableDataSR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)

@@ -158,6 +158,36 @@ enum class EMysqlQuerySaveType :uint8
 	USE_RESULT    UMETA(DisplayName = "Use Result"),
 };
 
+UENUM(BlueprintType)
+enum class EMysqlComparisonOperator :uint8
+{
+	EQUAL					UMETA(DisplayName = "="),
+	GREATER_THAN			UMETA(DisplayName = ">"),
+	LESS_THAN				UMETA(DisplayName = "<"),
+	GREATER_THAN_OR_EQUAL	UMETA(DisplayName = ">="),
+	LESS_THAN_OR_EQUAL		UMETA(DisplayName = "<="),
+	NOT_EQUAL				UMETA(DisplayName = "!="),
+	BETWEEN					UMETA(DisplayName = ">=min&&<=max"),
+	NOT_BETWEEN				UMETA(DisplayName = "!(>=min&&<=max)"),
+	SQL_IN					UMETA(DisplayName = "In"),
+	NOT_IN					UMETA(DisplayName = "Not In"),
+	COMPARE_NULL_VALUES		UMETA(DisplayName = "<=>"),
+	LIKE					UMETA(DisplayName = "like"),
+	REGEXP_OR_RLIKE			UMETA(DisplayName = "Regular matching"),
+	IS_NULL					UMETA(DisplayName = "Is_null"),
+	IS_NOT_NULL				UMETA(DisplayName = "Is not null")
+};
+
+UENUM(BlueprintType)
+enum class EMysqlLogicalOperators :uint8
+{
+	NONE    UMETA(DisplayName = "NONE"),
+	NOT		UMETA(DisplayName = "!"),
+	AND		UMETA(DisplayName = "&&"),
+	OR		UMETA(DisplayName = "||"),
+	XOR		UMETA(DisplayName = "^"),
+};
+
 
 //×Ö¶ÎµÄÀàÐÍ
 USTRUCT(BlueprintType)
@@ -307,4 +337,24 @@ struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
 		FString Having;
 
+};
+
+
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlAssignment
+{
+	GENERATED_USTRUCT_BODY()
+
+		FSimpleMysqlAssignment();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
+		FString InFieldName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
+		EMysqlComparisonOperator ComparisonOperator;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
+		FString Value;
+
+	FString ToString() const;
 };

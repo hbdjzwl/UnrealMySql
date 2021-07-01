@@ -50,6 +50,9 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 	bool GetSelectTableData(EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug = FSimpleMysqlDebugResult());
 
 	
+	//更新表数据
+	bool UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const FString& Condition, FString& ErrorMsg);
+
 
 	//快速查询传入的SQL语句
 	bool QueryLink(const FString& SQL, FString& ErrMesg);

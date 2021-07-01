@@ -1,4 +1,5 @@
 #include "Core/SimpleMysqlLinkType.h"
+#include "SimpleMySqlAssist.h"
 
 FMysqlFieldType::FMysqlFieldType()
 	: bUnsignedVariable(false)
@@ -111,6 +112,23 @@ FString FSimpleMysqlJoinParameters::ToString() const
 		SQL += MysqlJoinTypeEnum->GetNameStringByIndex((int32)JoinType) + TEXT(" JOIN ");
 
 		SQL += TableName + TEXT(" ON ") + Condition;//hp.id = eee.age
+	}
+
+	return SQL;
+}
+
+FSimpleMysqlAssignment::FSimpleMysqlAssignment()
+	:ComparisonOperator(EMysqlComparisonOperator::EQUAL)
+{
+
+}
+
+FString FSimpleMysqlAssignment::ToString() const
+{
+	FString SQL;
+	if (!InFieldName.IsEmpty())
+	{
+		SQL += InFieldName + TEXT(" ") + SimpleMysqlAssist::ComparisonOperatorToString(ComparisonOperator) + TEXT(" '") + Value + TEXT("'");
 	}
 
 	return SQL;
