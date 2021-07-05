@@ -11,7 +11,7 @@ namespace SimpleMysqlAssist
 {
 	FString ComparisonOperatorToString(EMysqlComparisonOperator CO);
 
-// 	void ConditionToString(FString &SQL,const TArray<FSimpleMysqlComparisonOperator> &Condition);
+ 	void ConditionToString(FString &SQL,const TArray<FSimpleMysqlComparisonOperator> &Condition);
 // 
 // 	void FieldTypeArrayToString(FString &SQL, const TMap<FString, FMysqlFieldType> &InNewFields);
 // 

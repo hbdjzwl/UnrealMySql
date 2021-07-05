@@ -1,5 +1,6 @@
 #include "Core/SimpleMysqlLink.h"
 #include "Core/SimpleMySqlMacro.h"
+#include "SimpleMySqlAssist.h"
 
 
 FSimpleMysqlLink::FSimpleMysqlLink(const FString& InUser, const FString& InHost, const FString& InPawd, const FString& InDB, const uint32 InPort, const FString& InUnix_Socket /*= "\0"*/, const TArray<ESimpleClientFlags> InClientFlag /*= 0*/)
@@ -226,10 +227,12 @@ bool FSimpleMysqlLink::OptimiseTable(const FString& TableName, FString& ErrorMsg
 	return QueryLink(SQL, ErrorMsg);
 }
 
-bool FSimpleMysqlLink::DeleteFromTableWhereData(const FString& TableName, const FString& Condition, FString& ErrorMsg)
+bool FSimpleMysqlLink::DeleteFromTableWhereData(const FString& TableName, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg)
 {
-		FString SQL = TEXT("DELETE FROM ") + TableName + TEXT("WHERE ") + Condition + TEXT(";");
-		return QueryLink(SQL, ErrorMsg);
+	FString SQL = TEXT("DELETE FROM ") + TableName;
+	SimpleMysqlAssist::ConditionToString(SQL, Condition);
+	SQL += TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
 }
 
 bool FSimpleMysqlLink::GetSelectTableData(EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
@@ -245,7 +248,7 @@ bool FSimpleMysqlLink::GetSelectTableData(EMysqlQuerySaveType SaveType, const FS
 	return false;
 }
 
-bool FSimpleMysqlLink::UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const FString& Condition, FString& ErrorMsg)
+bool FSimpleMysqlLink::UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg)
 {
 	FString SQL = TEXT("UPDATE ") + TableName + TEXT(" SET ");
 	for (auto& Tmp : InFields)
@@ -254,12 +257,8 @@ bool FSimpleMysqlLink::UpdateTableData(const FString& TableName, const TArray<FS
 	}
 	SQL.RemoveFromEnd(TEXT(","));
 
-	//SimpleMysqlAssist::ConditionToString(SQL, Condition);
+	SimpleMysqlAssist::ConditionToString(SQL, Condition);
 
-	if (!Condition.IsEmpty())
-	{
-		SQL += TEXT(" WHERE ") + Condition;
-	}
 
 	SQL += TEXT(";");
 
@@ -423,10 +422,7 @@ bool FSimpleMysqlLink::GetSelectTableDataSQL(FString& SQL ,const FString& TableN
 		//表名
 		SQL += (TEXT(" FROM ") + TableName);
 
-		if (!QueryParam.Condition.IsEmpty())
-		{
-			SQL += (TEXT(" WHERE ") + QueryParam.Condition);
-		}
+		SimpleMysqlAssist::ConditionToString(SQL, QueryParam.Condition);
 
 		//
 		if (QueryParam.JoinParameters.JoinType != EMysqlJoinType::NONE)

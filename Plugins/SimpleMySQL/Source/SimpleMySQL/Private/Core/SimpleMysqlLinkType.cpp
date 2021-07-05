@@ -126,9 +126,27 @@ FSimpleMysqlAssignment::FSimpleMysqlAssignment()
 FString FSimpleMysqlAssignment::ToString() const
 {
 	FString SQL;
-	if (!InFieldName.IsEmpty())
+	if (!A.IsEmpty())
 	{
-		SQL += InFieldName + TEXT(" ") + SimpleMysqlAssist::ComparisonOperatorToString(ComparisonOperator) + TEXT(" '") + Value + TEXT("'");
+		SQL += A + TEXT(" ") + SimpleMysqlAssist::ComparisonOperatorToString(ComparisonOperator) + TEXT(" '") + B + TEXT("'");
+	}
+
+	return SQL;
+}
+
+FSimpleMysqlComparisonOperator::FSimpleMysqlComparisonOperator()
+	:LogicalOperators(EMysqlLogicalOperators::NONE)
+{
+
+}
+
+FString FSimpleMysqlComparisonOperator::ToString() const
+{
+	FString SQL = Assignment.ToString() + TEXT(" ");
+	if (LogicalOperators != EMysqlLogicalOperators::NONE)
+	{
+		UEnum* LogicalOperatorsEnum = StaticEnum<EMysqlVariableType>();
+		SQL += LogicalOperatorsEnum->GetNameStringByIndex((int32)LogicalOperators);
 	}
 
 	return SQL;

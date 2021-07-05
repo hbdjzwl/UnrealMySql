@@ -1343,11 +1343,21 @@ bool USimpleMySQLLibrary::OptimiseTable(USimpleMysqlObject* Object, const FStrin
 	return false;
 }
 
-bool USimpleMySQLLibrary::DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const FString& Condition, FString& ErrorMsg)
+bool USimpleMySQLLibrary::DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg)
 {
 	if (Object)
 	{
 		return Object->GetLink()->DeleteFromTableWhereData(TableName, Condition, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::GetSelectTableData(USimpleMysqlObject* Object, EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug)
+{
+	if (Object)
+	{
+		return Object->GetLink()->GetSelectTableData(SaveType,TableName, InFields, QueryParam , Results, ErrorMes, Debug);
 	}
 
 	return false;
@@ -1387,6 +1397,16 @@ bool USimpleMySQLLibrary::PrintResult(USimpleMysqlObject *Object, const TArray<F
 	return false;
 }
 
+bool USimpleMySQLLibrary::UpdateTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->UpdateTableData(TableName, InFields, Condition, ErrorMsg);
+	}
+
+	return false;
+}
+
 bool USimpleMySQLLibrary::GetSelectTableDataSQL(USimpleMysqlObject* Object, FString& SQL, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam)
 {
 	if (Object)
@@ -1410,5 +1430,11 @@ TArray<FSimpleMysqlQueryOrderBy> USimpleMySQLLibrary::GetSimpleMysqlQueryOrderBy
 TArray<FSimpleMysqlJoinParameters> USimpleMySQLLibrary::GetFSimpleMysqlJoinParametersByNULLArray()
 {
 	return TArray<FSimpleMysqlJoinParameters>();
+}
+
+TArray<FSimpleMysqlComparisonOperator> USimpleMySQLLibrary::GetComparisonOperatorNULLArray()
+{
+	return TArray<FSimpleMysqlComparisonOperator>();
+
 }
 

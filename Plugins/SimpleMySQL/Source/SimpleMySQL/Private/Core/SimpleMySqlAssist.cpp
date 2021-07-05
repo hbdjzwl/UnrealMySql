@@ -42,19 +42,20 @@ FString SimpleMysqlAssist::ComparisonOperatorToString(EMysqlComparisonOperator C
 
 	return TEXT("");
 }
-// 
-// void SimpleMysqlAssist::ConditionToString(FString &SQL, const TArray<FSimpleMysqlComparisonOperator> &Condition)
-// {
-// 	if (Condition.Num())
-// 	{
-// 		SQL += TEXT(" WHERE ");
-// 		for (const auto &Tmp : Condition)
-// 		{
-// 			SQL += Tmp.ToString() + TEXT(" ");
-// 		}
-// 	}
-// }
-// 
+
+void SimpleMysqlAssist::ConditionToString(FString &SQL, const TArray<FSimpleMysqlComparisonOperator> &Condition)
+{
+	if (Condition.Num())
+	{
+		SQL += TEXT(" WHERE ");
+		for (const auto &Tmp : Condition)
+		{
+			SQL += Tmp.ToString() + TEXT(" ");
+		}
+	}
+}
+
+
 // void SimpleMysqlAssist::FieldTypeArrayToString(FString &SQL, const TMap<FString, FMysqlFieldType> &InNewFields)
 // {
 // 	if (InNewFields.Num())

@@ -303,6 +303,42 @@ struct SIMPLEMYSQL_API FSimpleMysqlJoinParameters
 	FString ToString() const;
 };
 
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlAssignment
+{
+	GENERATED_USTRUCT_BODY()
+
+		FSimpleMysqlAssignment();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
+		FString A;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
+		EMysqlComparisonOperator ComparisonOperator;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
+		FString B;
+
+	FString ToString() const;
+};
+
+
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlComparisonOperator
+{
+	GENERATED_USTRUCT_BODY()
+
+		FSimpleMysqlComparisonOperator();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|ComparisonOperator")
+		FSimpleMysqlAssignment Assignment;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|ComparisonOperator")
+		EMysqlLogicalOperators LogicalOperators;
+
+	FString ToString() const;
+};
+
 
 USTRUCT(BlueprintType)
 struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
@@ -318,7 +354,7 @@ struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
 	FSimpleMysqlJoinParameters JoinParameters;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
-	FString Condition;
+	TArray<FSimpleMysqlComparisonOperator> Condition;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
 	TArray<FString> GroupBy;
@@ -328,33 +364,13 @@ struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
 
 	//x = 第几个,y = 偏移
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
-		FVector2D Limit;
+	FVector2D Limit;
 
 	//是否进行汇总
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
-		bool bWithRollup;
+	bool bWithRollup;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
-		FString Having;
+	FString Having;
 
-};
-
-
-USTRUCT(BlueprintType)
-struct SIMPLEMYSQL_API FSimpleMysqlAssignment
-{
-	GENERATED_USTRUCT_BODY()
-
-		FSimpleMysqlAssignment();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
-		FString InFieldName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
-		EMysqlComparisonOperator ComparisonOperator;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|Assignment")
-		FString Value;
-
-	FString ToString() const;
 };

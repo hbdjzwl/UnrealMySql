@@ -45,15 +45,18 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 	//优化表:搭配 DeleteFromTable 用于删除和释放内存
 	bool OptimiseTable(const FString& TableName, FString& ErrorMsg);
 	//条件删除表
-	bool DeleteFromTableWhereData(const FString& TableName, const FString& Condition, FString& ErrorMsg);
-	//获取数据库里的数据
-	bool GetSelectTableData(EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug = FSimpleMysqlDebugResult());
+	bool DeleteFromTableWhereData(const FString& TableName, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
+
 
 	
 	//更新表数据
-	bool UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const FString& Condition, FString& ErrorMsg);
+	bool UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 
 
+	
+
+	//获取数据库里的数据
+	bool GetSelectTableData(EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug = FSimpleMysqlDebugResult());
 	//快速查询传入的SQL语句
 	bool QueryLink(const FString& SQL, FString& ErrMesg);
 	//

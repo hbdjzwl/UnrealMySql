@@ -63,15 +63,18 @@ public:
 		static bool OptimiseTable(USimpleMysqlObject* Object, const FString& TableName, FString& ErrorMsg);
 	//条件删除表
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-		static bool DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const FString& Condition, FString& ErrorMsg);
+		static bool DeleteFromTableWhereData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 
 
 
 	/////////////////////////////////////////查询打印//////////////////////////////////////////////
 	
+	//快速查询传入的SQL语句
+	static bool GetSelectTableData(USimpleMysqlObject* Object,EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug);
+
 	//
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool GetSelectTableDataSQL(USimpleMysqlObject* Object, FString& SQL, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam);
+	static bool GetSelectTableDataSQL(USimpleMysqlObject* Object, FString& SQL, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam);
 
 	//快速查询
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
@@ -82,6 +85,10 @@ public:
 	static bool PrintResult(USimpleMysqlObject *Object, const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen = true, bool bPrintToLog = true);
 
 
+
+	/////////////////////////////////////////更新//////////////////////////////////////////////
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+	bool UpdateTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 
 
 
@@ -95,5 +102,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
 	static TArray<FSimpleMysqlJoinParameters> GetFSimpleMysqlJoinParametersByNULLArray();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
+	static TArray<FSimpleMysqlComparisonOperator> GetComparisonOperatorNULLArray();
 
 };
