@@ -1422,12 +1422,12 @@ TArray<FString> USimpleMySQLLibrary::GetStringNULLArray()
 	return TArray<FString>();
 }
 
-TArray<FSimpleMysqlQueryOrderBy> USimpleMySQLLibrary::GetSimpleMysqlQueryOrderByNULLArray()
+TArray<FSimpleMysqlQueryOrderBy> USimpleMySQLLibrary::GetOrderByNULLArray()
 {
 	return TArray<FSimpleMysqlQueryOrderBy>();
 }
 
-TArray<FSimpleMysqlJoinParameters> USimpleMySQLLibrary::GetFSimpleMysqlJoinParametersByNULLArray()
+TArray<FSimpleMysqlJoinParameters> USimpleMySQLLibrary::GetJoinParamNULLArray()
 {
 	return TArray<FSimpleMysqlJoinParameters>();
 }

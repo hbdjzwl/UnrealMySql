@@ -348,7 +348,7 @@ struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
 	FSimpleMysqlQueryParameters();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
-	bool bDistinct;
+	bool bDistinct;	//是否查单个数据
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
 	FSimpleMysqlJoinParameters JoinParameters;

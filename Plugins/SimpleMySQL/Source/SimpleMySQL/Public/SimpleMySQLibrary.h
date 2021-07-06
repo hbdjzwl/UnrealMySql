@@ -70,6 +70,7 @@ public:
 	/////////////////////////////////////////查询打印//////////////////////////////////////////////
 	
 	//快速查询传入的SQL语句
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 	static bool GetSelectTableData(USimpleMysqlObject* Object,EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug);
 
 	//
@@ -88,7 +89,7 @@ public:
 
 	/////////////////////////////////////////更新//////////////////////////////////////////////
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
-	bool UpdateTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
+	static bool UpdateTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 
 
 
@@ -98,10 +99,10 @@ public:
 	static TArray<FString> GetStringNULLArray();
 	//
 	UFUNCTION(BlueprintCallable, BlueprintPure , meta = (Category = "SimpleMySQL|NULL"))
-	static TArray<FSimpleMysqlQueryOrderBy> GetSimpleMysqlQueryOrderByNULLArray();
+	static TArray<FSimpleMysqlQueryOrderBy> GetOrderByNULLArray();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
-	static TArray<FSimpleMysqlJoinParameters> GetFSimpleMysqlJoinParametersByNULLArray();
+	static TArray<FSimpleMysqlJoinParameters> GetJoinParamNULLArray();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
 	static TArray<FSimpleMysqlComparisonOperator> GetComparisonOperatorNULLArray();
