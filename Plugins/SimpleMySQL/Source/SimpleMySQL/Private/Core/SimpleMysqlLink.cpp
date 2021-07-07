@@ -265,6 +265,22 @@ bool FSimpleMysqlLink::UpdateTableData(const FString& TableName, const TArray<FS
 	return QueryLink(SQL, ErrorMsg); 
 }
 
+bool FSimpleMysqlLink::ReplaceTableData(const FString& TableName, const TArray<FSimpleMysqlReplaceParameters>& InReplaces, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg)
+{
+	FString SQL = TEXT("UPDATE ") + TableName + TEXT(" SET ");
+	for (auto& Tmp : InReplaces)
+	{
+		SQL += (Tmp.ToString() + TEXT(","));
+	}
+	SQL.RemoveFromEnd(TEXT(","));
+
+	SimpleMysqlAssist::ConditionToString(SQL, Condition);
+
+	SQL += TEXT(";");
+
+	return QueryLink(SQL, ErrorMsg);
+}
+
 bool FSimpleMysqlLink::GetSelectTableDataSR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
 {
 	FString SQL;

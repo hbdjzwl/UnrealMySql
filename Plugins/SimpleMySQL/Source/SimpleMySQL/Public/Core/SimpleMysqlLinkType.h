@@ -374,3 +374,22 @@ struct SIMPLEMYSQL_API FSimpleMysqlQueryParameters
 	FString Having;
 
 };
+
+USTRUCT(BlueprintType)
+struct SIMPLEMYSQL_API FSimpleMysqlReplaceParameters
+{
+	GENERATED_USTRUCT_BODY()
+
+		FSimpleMysqlReplaceParameters();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		FString FieldName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		FString OldDataValue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpleMySQL|QueryParameters")
+		FString NewDataValue;
+
+	FString ToString() const;
+};

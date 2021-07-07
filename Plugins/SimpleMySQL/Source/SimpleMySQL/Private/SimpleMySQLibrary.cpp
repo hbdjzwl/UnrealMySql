@@ -1407,6 +1407,16 @@ bool USimpleMySQLLibrary::UpdateTableData(USimpleMysqlObject* Object, const FStr
 	return false;
 }
 
+bool USimpleMySQLLibrary::ReplaceTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlReplaceParameters>& InReplaces, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->ReplaceTableData(TableName, InReplaces, Condition, ErrorMsg);
+	}
+
+	return false;
+}
+
 bool USimpleMySQLLibrary::GetSelectTableDataSQL(USimpleMysqlObject* Object, FString& SQL, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam)
 {
 	if (Object)
@@ -1436,5 +1446,10 @@ TArray<FSimpleMysqlComparisonOperator> USimpleMySQLLibrary::GetComparisonOperato
 {
 	return TArray<FSimpleMysqlComparisonOperator>();
 
+}
+
+TArray<FSimpleMysqlReplaceParameters> USimpleMySQLLibrary::GetReplaceParametersNULLArray()
+{
+	return TArray<FSimpleMysqlReplaceParameters>();
 }
 

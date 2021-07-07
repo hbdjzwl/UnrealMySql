@@ -49,8 +49,9 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 
 
 	
-	//更新表数据
+	/////////////////////更新表数据
 	bool UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
+	bool ReplaceTableData(const FString& TableName, const TArray<FSimpleMysqlReplaceParameters>& InReplaces, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 
 
 	

@@ -151,3 +151,17 @@ FString FSimpleMysqlComparisonOperator::ToString() const
 
 	return SQL;
 }
+
+FSimpleMysqlReplaceParameters::FSimpleMysqlReplaceParameters()
+{
+
+}
+
+FString FSimpleMysqlReplaceParameters::ToString() const
+{
+	FString SQL = FieldName + TEXT("=REPLACE(") + FieldName + TEXT(",'");
+	SQL += OldDataValue + TEXT("','");
+	SQL += NewDataValue + TEXT("')");
+
+	return SQL;
+}

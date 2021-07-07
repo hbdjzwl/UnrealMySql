@@ -87,9 +87,16 @@ public:
 
 
 
+
+
+
 	/////////////////////////////////////////¸üÐÂ//////////////////////////////////////////////
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 	static bool UpdateTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
+
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+	static bool ReplaceTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlReplaceParameters>& InReplaces, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
+
 
 
 
@@ -107,4 +114,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
 	static TArray<FSimpleMysqlComparisonOperator> GetComparisonOperatorNULLArray();
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
+	static TArray<FSimpleMysqlReplaceParameters> GetReplaceParametersNULLArray();
 };
