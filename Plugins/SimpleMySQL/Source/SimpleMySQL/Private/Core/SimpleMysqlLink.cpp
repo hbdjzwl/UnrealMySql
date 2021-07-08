@@ -281,6 +281,49 @@ bool FSimpleMysqlLink::ReplaceTableData(const FString& TableName, const TArray<F
 	return QueryLink(SQL, ErrorMsg);
 }
 
+bool FSimpleMysqlLink::InsertTableData(const FString& TableName, const TMap<FString, FString>& InsetKeyValueDatas, FString& ErrorMsg)
+{
+	FString SQL = TEXT("INSERT INTO ") + TableName + TEXT("(");
+	for (const auto& Tmp : InsetKeyValueDatas)
+	{
+		SQL += Tmp.Key + TEXT(",");
+	}
+	SQL.RemoveFromEnd(TEXT(","));
+
+	SQL += TEXT(") VALUES(");
+	for (const auto& Tmp : InsetKeyValueDatas)
+	{
+		if (Tmp.Value.Contains("(") || Tmp.Value.Contains(TEXT(")")) || Tmp.Value.Contains(TEXT("()")))	//是否包含函数
+		{
+			SQL += (Tmp.Value + TEXT("',"));
+		}
+		else
+		{
+			SQL += (TEXT("'") + Tmp.Value + TEXT("',"));
+		}
+	}
+	SQL.RemoveFromEnd(TEXT(","));
+	SQL += TEXT(");");
+
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::SimpleInsertTableData(const FString& TableName, const TArray<FString>& InsetValueDatas, FString& ErrorMsg)
+{
+	FString SQL = TEXT("INSERT INTO ") + TableName;
+	
+
+	SQL += TEXT(" VALUES(");
+	for (const auto& Tmp : InsetValueDatas)
+	{
+		SQL += (TEXT("'") + Tmp + TEXT("',"));
+	}
+	SQL.RemoveFromEnd(TEXT(","));
+	SQL += TEXT(");");
+
+	return QueryLink(SQL, ErrorMsg);
+}
+
 bool FSimpleMysqlLink::GetSelectTableDataSR(const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug /*= FSimpleMysqlDebugResult()*/)
 {
 	FString SQL;

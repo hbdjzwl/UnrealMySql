@@ -49,12 +49,17 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 
 
 	
-	/////////////////////更新表数据
+	/////////////////////////////////////////更新数据表//////////////////////////////////////////////
 	bool UpdateTableData(const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 	bool ReplaceTableData(const FString& TableName, const TArray<FSimpleMysqlReplaceParameters>& InReplaces, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 
 
-	
+	/////////////////////////////////////////插入//////////////////////////////////////////////
+	bool InsertTableData(const FString& TableName, const TMap<FString, FString>& InsetKeyValueDatas, FString& ErrorMsg);
+	bool SimpleInsertTableData(const FString& TableName, const TArray<FString>& InsetValueDatas,FString& ErrorMsg);
+	//bool ReplaceIfExistence(const FString& TableName, const TMap<FString, FString>& InsetKeyValueDatas, FString& ErrorMsg);
+
+
 
 	//获取数据库里的数据
 	bool GetSelectTableData(EMysqlQuerySaveType SaveType, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam, TArray<FSimpleMysqlResult>& Results, FString& ErrorMes, const FSimpleMysqlDebugResult& Debug = FSimpleMysqlDebugResult());

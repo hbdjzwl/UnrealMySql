@@ -1417,6 +1417,26 @@ bool USimpleMySQLLibrary::ReplaceTableData(USimpleMysqlObject* Object, const FSt
 	return false;
 }
 
+bool USimpleMySQLLibrary::InsertTableData(USimpleMysqlObject* Object, const FString& TableName, const TMap<FString, FString>& InsetKeyValueDatas, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->InsertTableData(TableName, InsetKeyValueDatas, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::SimpleInsertTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InsetValueDatas, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->SimpleInsertTableData(TableName, InsetValueDatas, ErrorMsg);
+	}
+
+	return false;
+}
+
 bool USimpleMySQLLibrary::GetSelectTableDataSQL(USimpleMysqlObject* Object, FString& SQL, const FString& TableName, const TArray<FString>& InFields, const FSimpleMysqlQueryParameters& QueryParam)
 {
 	if (Object)
@@ -1451,5 +1471,11 @@ TArray<FSimpleMysqlComparisonOperator> USimpleMySQLLibrary::GetComparisonOperato
 TArray<FSimpleMysqlReplaceParameters> USimpleMySQLLibrary::GetReplaceParametersNULLArray()
 {
 	return TArray<FSimpleMysqlReplaceParameters>();
+}
+
+TMap<FString, FString> USimpleMySQLLibrary::GetMapStringNULL()
+{
+	return TMap<FString, FString>();
+
 }
 

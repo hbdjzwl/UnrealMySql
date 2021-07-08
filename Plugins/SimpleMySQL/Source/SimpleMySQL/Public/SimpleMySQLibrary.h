@@ -97,8 +97,12 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 	static bool ReplaceTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlReplaceParameters>& InReplaces, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
 
+	/////////////////////////////////////////插入//////////////////////////////////////////////
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+	static bool InsertTableData(USimpleMysqlObject* Object, const FString& TableName, const TMap<FString, FString>& InsetKeyValueDatas, FString& ErrorMsg);
 
-
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+	static bool SimpleInsertTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InsetValueDatas, FString& ErrorMsg);
 
 	//////////////////////////////////////// 返回NULL值 ////////////////////////////////////////
 	//返回空值
@@ -116,4 +120,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
 	static TArray<FSimpleMysqlReplaceParameters> GetReplaceParametersNULLArray();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Category = "SimpleMySQL|NULL"))
+	static TMap<FString, FString> GetMapStringNULL();
 };
