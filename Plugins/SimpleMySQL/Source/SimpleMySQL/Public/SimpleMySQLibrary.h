@@ -85,11 +85,6 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 	static bool PrintResult(USimpleMysqlObject *Object, const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen = true, bool bPrintToLog = true);
 
-
-
-
-
-
 	/////////////////////////////////////////更新//////////////////////////////////////////////
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 	static bool UpdateTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FSimpleMysqlAssignment>& InFields, const TArray<FSimpleMysqlComparisonOperator>& Condition, FString& ErrorMsg);
@@ -104,8 +99,25 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
 	static bool SimpleInsertTableData(USimpleMysqlObject* Object, const FString& TableName, const TArray<FString>& InsetValueDatas, FString& ErrorMsg);
 
+
+	//////////////////////////////////////// 事务操作 ////////////////////////////////////////
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool StartTransaction(USimpleMysqlObject* Object, FString& ErrorMsg);
+
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool SetAutoCommit(USimpleMysqlObject* Object, bool bAuto, FString& ErrorMsg);
+
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool Commit(USimpleMysqlObject* Object, FString& ErrorMsg);
+
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool SetSavePointName(USimpleMysqlObject* Object, const FString& SaveName, FString& ErrorMsg);
+
+	UFUNCTION(BlueprintCallable, meta = (Category = "SimpleMySQL"))
+		static bool Rollback(USimpleMysqlObject* Object, const FString& SaveName, FString& ErrorMsg);
+
+
 	//////////////////////////////////////// 返回NULL值 ////////////////////////////////////////
-	//返回空值
 	UFUNCTION(BlueprintCallable, BlueprintPure ,meta = (Category = "SimpleMySQL|NULL"))
 	static TArray<FString> GetStringNULLArray();
 	//

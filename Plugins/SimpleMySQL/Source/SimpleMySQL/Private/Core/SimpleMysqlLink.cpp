@@ -293,9 +293,9 @@ bool FSimpleMysqlLink::InsertTableData(const FString& TableName, const TMap<FStr
 	SQL += TEXT(") VALUES(");
 	for (const auto& Tmp : InsetKeyValueDatas)
 	{
-		if (Tmp.Value.Contains("(") || Tmp.Value.Contains(TEXT(")")) || Tmp.Value.Contains(TEXT("()")))	//是否包含函数
+		if (IsMysqlFunction(Tmp.Value))	//是否是函数(类似now())
 		{
-			SQL += (Tmp.Value + TEXT("',"));
+			SQL += (Tmp.Value + TEXT(","));
 		}
 		else
 		{
@@ -316,7 +316,14 @@ bool FSimpleMysqlLink::SimpleInsertTableData(const FString& TableName, const TAr
 	SQL += TEXT(" VALUES(");
 	for (const auto& Tmp : InsetValueDatas)
 	{
-		SQL += (TEXT("'") + Tmp + TEXT("',"));
+		if (IsMysqlFunction(Tmp))	//是否是函数(类似now())
+		{
+			SQL += (Tmp + TEXT(","));
+		}
+		else
+		{
+			SQL += (TEXT("'") + Tmp + TEXT("',"));
+		}
 	}
 	SQL.RemoveFromEnd(TEXT(","));
 	SQL += TEXT(");");
@@ -412,6 +419,54 @@ bool FSimpleMysqlLink::PrintResult(const TArray<FSimpleMysqlResult>& Results, bo
 	}
 
 	return Results.Num() != 0;
+}
+
+
+bool FSimpleMysqlLink::StartTransaction(FString& ErrorMsg)
+{
+	FString SQL = TEXT("START TRANSACTION;");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::SetAutoCommit(bool bAuto, FString& ErrorMsg)
+{
+	FString SQL = TEXT("SET AUTOCOMMIT = ") + FString::Printf(TEXT("%i"), bAuto) + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::Commit(FString& ErrorMsg)
+{
+	FString SQL = TEXT("COMMIT;");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::SetSavePointName(const FString& SaveName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("SAVEPOINT ") + SaveName;
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::ReleaseSavePoint(const FString& SaveName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("RELEASE SAVEPOINT ") + SaveName + TEXT(";");
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::Rollback(const FString& SaveName, FString& ErrorMsg)
+{
+	FString SQL = TEXT("ROLLBACK ");
+	if (!SaveName.IsEmpty())
+	{
+		SQL += TEXT("TO ") + SaveName;
+	}
+	SQL += TEXT(";");
+
+	return QueryLink(SQL, ErrorMsg);
+}
+
+bool FSimpleMysqlLink::IsMysqlFunction(const FString& Element)
+{
+	return Element.Contains(TEXT("(")) || Element.Contains(TEXT(")")) || Element.Contains(TEXT("()"));
 }
 
 uint32 FSimpleMysqlLink::ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const

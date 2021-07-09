@@ -70,7 +70,23 @@ struct  FSimpleMysqlLink :public TSharedFromThis<FSimpleMysqlLink>
 	//打印结果集
 	bool PrintResult(const TArray<FSimpleMysqlResult>& Results, bool bPrintToScreen = true, bool bPrintToLog = true);
 
+
+
+	/////////////////////////////////////////事务//////////////////////////////////////////////
+public:
+	//InnoDB
+	bool StartTransaction(FString& ErrorMsg);
+	bool SetAutoCommit(bool bAuto, FString& ErrorMsg);
+	bool Commit(FString& ErrorMsg);
+	bool SetSavePointName(const FString& SaveName, FString& ErrorMsg);
+	bool ReleaseSavePoint(const FString& SaveName, FString& ErrorMsg);
+	bool Rollback(const FString& SaveName, FString& ErrorMsg);
+
+
 protected:
+	bool IsMysqlFunction(const FString& Element);
+
+
 	uint32 ToMySqlClientFlag(ESimpleClientFlags ClientFlags) const;
 	//获取查询所有行结果
 	void GetResult(MYSQL_RES* RES, TArray<FSimpleMysqlResult>& Results);

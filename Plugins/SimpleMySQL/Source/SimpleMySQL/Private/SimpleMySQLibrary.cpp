@@ -1447,6 +1447,57 @@ bool USimpleMySQLLibrary::GetSelectTableDataSQL(USimpleMysqlObject* Object, FStr
 	return false;
 }
 
+bool USimpleMySQLLibrary::StartTransaction(USimpleMysqlObject* Object, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->StartTransaction(ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::SetAutoCommit(USimpleMysqlObject* Object, bool bAuto, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->SetAutoCommit(bAuto, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::Commit(USimpleMysqlObject* Object, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->Commit(ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::SetSavePointName(USimpleMysqlObject* Object, const FString& SaveName, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->SetSavePointName(SaveName, ErrorMsg);
+	}
+
+	return false;
+}
+
+bool USimpleMySQLLibrary::Rollback(USimpleMysqlObject* Object, const FString& SaveName, FString& ErrorMsg)
+{
+	if (Object)
+	{
+		return Object->GetLink()->Rollback(SaveName, ErrorMsg);
+	}
+
+	return false;
+}
+
+
 TArray<FString> USimpleMySQLLibrary::GetStringNULLArray()
 {
 	return TArray<FString>();
